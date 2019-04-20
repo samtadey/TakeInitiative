@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
-import CombatantListItem from './CombatantListItem';
+import PartyListItem from './PartyListItem';
 
 const styles = StyleSheet.create({
     container: {
@@ -9,18 +9,16 @@ const styles = StyleSheet.create({
 });
 
 
-const CombatantList = ({ itemList }) => (
+const PartyList = ({ itemList }) => (
     <View style={styles.container}>
         <FlatList
                 data={itemList}
-                renderItem={({ item }) => <CombatantListItem
+                renderItem={({ item }) => <PartyListItem
                     name={item.name}
-                    player_class={item.player_class}
-                    initiative={item.initiative}
+                    memberNo={item.memberNo}
                 />}
         />
-
     </View>
 );
 
-export default CombatantList;
+export default PartyList;

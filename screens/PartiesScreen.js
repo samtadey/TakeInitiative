@@ -4,24 +4,17 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
   Button,
+  View,
 } from 'react-native';
+import PartyList from '../components/PartyList';
 
-import { WebBrowser } from 'expo';
-import { MonoText } from '../components/StyledText';
-import CombatantList from '../components/CombatantList';
+var adParties = [
+    {name: "Crazy Party", memberNo: 6},
+    {name: "Company of the Risen", memberNo: 8},
+  ];
 
-
-
-var party = [
-  {name: "Sam", player_class: "Paladin", initiative: 25},
-  {name: "Ted", player_class: "Rogue", initiative: 24},
-  {name: "Fred", player_class: "Ranger", initiative: 2}
-];
-
-
-export default class HomeScreen extends React.Component {
+export default class PartiesScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -32,78 +25,31 @@ export default class HomeScreen extends React.Component {
 
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>    
 
-          <View style={styles.container}>
-            <CombatantList
-              itemList={party}
-            />
-          </View>
+            <View style={styles.container}>
+                <PartyList
+                    itemList={adParties}
+                />
+            </View>
 
-          <Button title="pressme" onPress={this.onPressLearnMore}/>
+            <Button
+                title='Add Party'
+                style={styles.buttonAddParty}
+            />
+
 
         </ScrollView>
 
-        
       </View>
     );
   }
 
-  /*onPressLearnMore() {
-    var console = require('console');
-    fetch('http://localhost:4000/test', {
-      method: 'GET'
-      }).then(response => {
-        console.log(response);
-      });
-
-    const axios = require('axios');
-
-    axios.get('http://localhost:4000/test')
-      .then(function (response) {
-        // handle success
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  }*/
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
+    addParty () {
+    
     }
-  }
 
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -125,6 +71,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
   },
+  buttonAddParty: {
+    backgroundColor: '#add8e6',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 12,
+    color: 'black',
+    fontSize: 36,
+    fontWeight: 'bold',
+    overflow: 'hidden',
+    padding: 12,
+    textAlign:'center',
+},
   welcomeImage: {
     width: 100,
     height: 80,
