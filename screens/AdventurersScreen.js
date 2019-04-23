@@ -16,7 +16,7 @@ var adventurers = [
 
 export default class AdventurersScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'Name of Ad Party here',
   };
 
   render() {
@@ -33,6 +33,7 @@ export default class AdventurersScreen extends React.Component {
 
             <Button
                 title='Add Adventurer'
+                onPress={() => this.props.navigation.navigate("AddEditAdventurer")}
                 style={styles.buttonAddParty}
             />
 

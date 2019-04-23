@@ -16,7 +16,7 @@ var adParties = [
 
 export default class PartiesScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'Adventuring Parties',
   };
 
   render() {
@@ -27,21 +27,23 @@ export default class PartiesScreen extends React.Component {
 
             <View style={styles.container}>
                 <PartyList
-                    itemList={adParties}
+                  itemList={adParties}
                 />
             </View>
 
             <Button
+                onPress={() => this.props.navigation.navigate("AddEditParty")}
                 title='Add Party'
                 style={styles.buttonAddParty}
             />
-
 
         </ScrollView>
 
       </View>
     );
   }
+
+
 
     addParty () {
     

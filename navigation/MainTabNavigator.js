@@ -4,13 +4,13 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import PartiesScreen from '../screens/PartiesScreen';
 import AdventurersScreen from '../screens/AdventurersScreen';
+import AddEditPartyScreen from '../screens/AddEditPartyScreen';
+import AddEditAdventurerScreen from '../screens/AddEditAdventurerScreen';
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+  Home : {screen: HomeScreen }
 });
 
 HomeStack.navigationOptions = {
@@ -27,36 +27,12 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
-});
-
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
-    />
-  ),
-};
-
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
-});
-
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-    />
-  ),
-};
 
 const ManagePartyStack = createStackNavigator({
-  Party: PartiesScreen,
+  PartyList: {screen: PartiesScreen },
+  AddEditParty: {screen: AddEditPartyScreen },
+  AdventurerList: {screen: AdventurersScreen },
+  AddEditAdventurer: {screen: AddEditAdventurerScreen },
 });
 
 ManagePartyStack.navigationOptions = {
@@ -69,24 +45,8 @@ ManagePartyStack.navigationOptions = {
   ),
 };
 
-const ManageMemberStack = createStackNavigator({
-  Member: AdventurersScreen,
-});
-
-ManageMemberStack.navigationOptions = {
-  tabBarLabel: 'Adventurers',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-book' : 'md-book'}
-    />
-  ),
-};
-
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
   ManagePartyStack,
-  ManageMemberStack,
 });
+

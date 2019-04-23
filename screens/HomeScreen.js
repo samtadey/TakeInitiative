@@ -22,9 +22,9 @@ var party = [
 
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
+  static navigationOptions = ({ navigation }) => ({
+    title: "Take Initiative",
+})
 
   render() {
     return (
