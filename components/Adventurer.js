@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class Adventurer extends React.Component {
     constructor(props) {
@@ -8,6 +9,7 @@ export default class Adventurer extends React.Component {
 
     render() {
         return (
+            <TouchableOpacity onPress={() => {this.props.editAdv(this.props.name, this.props.adv_class, this.props.race)}}>
             <View style={styles.adventurer_container}>
               <View style={styles.flexrow}>
                 <View style={styles.image_left}>
@@ -32,6 +34,7 @@ export default class Adventurer extends React.Component {
                 </View>
               </View>
             </View>
+            </TouchableOpacity>
         );
     }
 }
