@@ -1,154 +1,59 @@
 import React from 'react';
 import {
-  Platform,
-  ScrollView,
   StyleSheet,
-  Text,
-  Button,
   View,
+  Text,
 } from 'react-native';
-import PartyMemberList from '../components/PartyMemberList';
+import { Button}  from 'native-base';
+import { ScrollView } from 'react-native-gesture-handler';
+import Adventurer from '../components/Adventurer';
 
-var adventurers = [
-    {name: "Balasar", level: 9, adv_class: "Paladin", race: "Dragonborn"},
-    {name: "Azrael", level: 8, adv_class: "Cleric", race: "Assimar"},
-  ];
+let adventurers = [
+    {name: "Balasar", adv_class: "Paladin", race: "Dragonborn", image: require("../assets/character_icons/male_paladin.png")},
+    {name: "Azrael", adv_class: "Cleric", race: "Assimar", image: require("../assets/character_icons/male_cleric.png")},
+    {name: "Sly", adv_class: "Rogue", race: "Human", image: require("../assets/character_icons/female_rogue.png")},
+    {name: "Orsik", adv_class: "Barbarian", race: "Dwarf", image: require("../assets/character_icons/male_barbarian.png")}
+];
 
 export default class AdventurersScreen extends React.Component {
   static navigationOptions = {
-    title: 'Name of Ad Party here',
+    title: 'Party here',
   };
 
   render() {
     return (
       <View style={styles.container}>
-
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>    
-
-            <View style={styles.container}>
-                <PartyMemberList
-                    itemList={adventurers}
-                />
-            </View>
-
-            <Button
-                title='Add Adventurer'
-                onPress={() => this.props.navigation.navigate("AddEditAdventurer")}
-                style={styles.buttonAddParty}
-            />
-
-
+        <ScrollView>    
+          {adventurers.map(function(listitem, index){
+            return(
+                <Adventurer 
+                    key={index}
+                    image={listitem.image}
+                    name={listitem.name} 
+                    adv_class={listitem.adv_class}
+                    race={listitem.race}
+                />)
+          })}
+          <Button block light style={styles.add_button}>
+            <Text>Add Adventurer</Text>
+          </Button>
         </ScrollView>
-
       </View>
     );
   }
-
-    addParty () {
-    
-    }
-
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  buttonAddParty: {
-    backgroundColor: '#add8e6',
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 12,
-    color: 'black',
-    fontSize: 36,
-    fontWeight: 'bold',
-    overflow: 'hidden',
-    padding: 12,
-    textAlign:'center',
-},
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
+    backgroundColor: '#FFFFFF',
     position: 'absolute',
+    top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
   },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
-});
+  add_button: {
+    borderRadius: 5,
+  }
+})
+

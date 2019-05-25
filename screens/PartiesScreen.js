@@ -7,7 +7,6 @@ import {
   Button,
   View,
 } from 'react-native';
-import PartyList from '../components/PartyList';
 
 var adParties = [
     {name: "Crazy Party", memberNo: 6},
@@ -20,15 +19,15 @@ export default class PartiesScreen extends React.Component {
   };
 
   render() {
+    
+
     return (
       <View style={styles.container}>
 
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>    
 
             <View style={styles.container}>
-                <PartyList
-                  itemList={adParties}
-                />
+                
             </View>
 
             <Button

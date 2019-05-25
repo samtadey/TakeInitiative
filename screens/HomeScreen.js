@@ -8,12 +8,6 @@ import {
   Button,
 } from 'react-native';
 
-import { WebBrowser } from 'expo';
-import { MonoText } from '../components/StyledText';
-import CombatantList from '../components/CombatantList';
-
-
-
 var party = [
   {name: "Sam", player_class: "Paladin", initiative: 25},
   {name: "Ted", player_class: "Rogue", initiative: 24},
@@ -24,7 +18,7 @@ var party = [
 export default class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: "Take Initiative",
-})
+  })
 
   render() {
     return (
@@ -33,12 +27,10 @@ export default class HomeScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>    
 
           <View style={styles.container}>
-            <CombatantList
-              itemList={party}
-            />
+            
           </View>
 
-          <Button title="pressme" onPress={this.onPressLearnMore}/>
+          <Text>Test</Text>
 
         </ScrollView>
 
@@ -46,63 +38,6 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
-
-  /*onPressLearnMore() {
-    var console = require('console');
-    fetch('http://localhost:4000/test', {
-      method: 'GET'
-      }).then(response => {
-        console.log(response);
-      });
-
-    const axios = require('axios');
-
-    axios.get('http://localhost:4000/test')
-      .then(function (response) {
-        // handle success
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  }*/
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
