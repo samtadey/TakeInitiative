@@ -7,7 +7,6 @@ export default class Adventurer extends React.Component {
     }
 
     render() {
-        test = this.props.image;
         return (
             <View style={styles.adventurer_container}>
               <View style={styles.flexrow}>
