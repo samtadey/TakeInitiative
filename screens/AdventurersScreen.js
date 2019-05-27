@@ -8,7 +8,6 @@ import {
 import Modal from "react-native-modal";
 import ModalSelector from 'react-native-modal-selector';
 import { Item, Label, Input, Button}  from 'native-base';
-//import { ScrollView } from 'react-native-gesture-handler';
 import Adventurer from '../components/Adventurer';
 import dnddata from '../constants/dnddata'
 
