@@ -3,11 +3,12 @@ import {
   StyleSheet,
   View,
   Text,
+  ScrollView,
 } from 'react-native';
 import Modal from "react-native-modal";
 import ModalSelector from 'react-native-modal-selector';
 import { Item, Label, Input, Button}  from 'native-base';
-import { ScrollView } from 'react-native-gesture-handler';
+//import { ScrollView } from 'react-native-gesture-handler';
 import Adventurer from '../components/Adventurer';
 import dnddata from '../constants/dnddata'
 
@@ -47,13 +48,16 @@ export default class AdventurersScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        {/* Add/Edit adventurer modal */}
         <Modal
               visible={this.state.modalVisible}
               animationType={'slide'}
               onBackdropPress={() => closeModal()}
         >
         <View style={styles.modal_container}>
+
           <Text style={styles.title}>Add/Edit Adventurer</Text>
+
           <Item floatingLabel style={styles.spacer}>
             <Label>Name</Label>
             <Input
@@ -63,22 +67,26 @@ export default class AdventurersScreen extends React.Component {
             onChangeText={(text) => this.setState({name: text})}
             />
           </Item>
+
           <ModalSelector
             data={dnddata.classes}
             style={styles.spacer}
             initValue={this.state.adv_class == null ? "Choose Class" : this.state.adv_class}
             onChange={(option)=>{ this.setState({adv_class: option.label}) }} />
+
           <ModalSelector
             data={dnddata.races}
             style={styles.spacer}
             initValue={this.state.adv_class == null ? "Choose Race" : this.state.race}
             onChange={(option)=>{ this.setState({race: option.label}) }} />
+
           <Button success block onPress={() => closeModal()} style={styles.add_button}>
             <Text style={{color: 'white'}}>Confirm</Text>
           </Button>
         </View>
         </Modal>
 
+        {/* Listview of the adventurers */}
         <ScrollView>    
           {adventurers.map(function(listitem, index){
             return(
