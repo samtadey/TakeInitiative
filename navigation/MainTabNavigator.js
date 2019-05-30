@@ -1,46 +1,46 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Icon } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import InitiativeScreen from '../screens/InitiativeScreen';
+import AdventuringPartiesScreen from '../screens/AdventuringPartiesScreen';
+import AdventurersScreen from '../screens/AdventurersScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+  Home : {screen: InitiativeScreen }
 });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+  tabBarLabel: 'Initiative',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+        Platform.OS === 'ios' ? `ios-clipboard` : 'md-clipboard'
       }
     />
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const ManagePartyStack = createStackNavigator({
+  AdventuringPartiesScreen: {screen: AdventuringPartiesScreen },
+  AdventurersScreen: {screen: AdventurersScreen},
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+ManagePartyStack.navigationOptions = {
+  tabBarLabel: 'Parties',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-beer' : 'md-beer'}
     />
   ),
 };
 
 const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+  Settings: {screen: SettingsScreen },
 });
 
 SettingsStack.navigationOptions = {
@@ -48,13 +48,14 @@ SettingsStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
     />
   ),
 };
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  ManagePartyStack,
   SettingsStack,
 });
+
