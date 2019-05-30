@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Platform, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Icon } from 'native-base';
 
@@ -31,9 +31,9 @@ class AdventuringParty extends React.Component {
                                 <Text>{this.props.start_date}</Text>
                             </View>
                         </View>
-                        {/* ADD Logic for iOS and Android */}
-                        <TouchableOpacity style={styles.edit_icon}>
-                            <Icon name="ios-create" style={styles.icon}/>
+                        {/* Edit Party */}
+                        <TouchableOpacity style={styles.edit_icon} onPress={() => {this.props.editParty(this.props.party_name, this.props.gm_name, this.props.start_date)}}>
+                            <Icon name={Platform.OS === 'ios' ? 'ios-create' : 'md-create'} style={styles.icon}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     names: {
         display: 'flex',
         flex: 3,
+        justifyContent: 'center',
     },
     photo: {
         height: 75,

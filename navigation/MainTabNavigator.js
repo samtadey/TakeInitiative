@@ -3,24 +3,22 @@ import { Platform, Icon } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
+import InitiativeScreen from '../screens/InitiativeScreen';
 import AdventuringPartiesScreen from '../screens/AdventuringPartiesScreen';
 import AdventurersScreen from '../screens/AdventurersScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const HomeStack = createStackNavigator({
-  Home : {screen: HomeScreen }
+  Home : {screen: InitiativeScreen }
 });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+  tabBarLabel: 'Initiative',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+        Platform.OS === 'ios' ? `ios-clipboard` : 'md-clipboard'
       }
     />
   ),
@@ -36,7 +34,7 @@ ManagePartyStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-book' : 'md-book'}
+      name={Platform.OS === 'ios' ? 'ios-beer' : 'md-beer'}
     />
   ),
 };
