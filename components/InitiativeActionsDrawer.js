@@ -3,6 +3,7 @@ import { View, Platform, Text, StyleSheet} from 'react-native';
 import { Button } from 'native-base';
 import { withNavigation } from 'react-navigation';
 import strings from '../constants/Strings'
+import CreateEncounterModal from '../components/CreateEncounterModal';
 
 class InitiativeActionsDrawer extends React.Component {
 
@@ -19,9 +20,10 @@ class InitiativeActionsDrawer extends React.Component {
                     <Text>{strings.drawer.initDrawerRemove}</Text>
                 </Button>
                 <View style={styles.bottom}>
-                    <Button success full style={styles.spacing}>
+                    {/* <Button success full style={styles.spacing}>
                         <Text style={{color: 'white'}}>{strings.drawer.initDrawerCreate}</Text>
-                    </Button>
+                    </Button> */}
+                    <CreateEncounterModal/>
                     <Button danger full style={styles.spacing}>
                         <Text style={{color: 'white'}}>{strings.drawer.initDrawerClear}</Text>
                     </Button>
