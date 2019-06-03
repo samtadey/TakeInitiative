@@ -5,12 +5,14 @@ import strings from '../constants/Strings';
 import Modal from "react-native-modal";
 import MonsterNpcForm from '../components/MonsterNpcForm';
 import { ScrollView } from 'react-native-gesture-handler';
+import NPC from '../classes/NPC';
 
 export default class CreateEncounterModal extends React.Component {
     constructor(props){
         super(props);
         this.state = {
           CEMmodalVisible: false,
+          npcs: [new NPC()],
         };
         CEMopenModal = () => {
           this.setState({
@@ -20,9 +22,20 @@ export default class CreateEncounterModal extends React.Component {
         CEMcloseModal = () => {
           this.setState({CEMmodalVisible:false});
         }
+        extendForm = () => {
+            let form = this.state.npcs;
+            form.push(new NPC());
+            this.setState({npcs: form});
+        }
+        updNpc = (id, npc) => {
+            let form = this.state.npcs;
+            form[id] = npc;
+            this.setState({npcs: form});
+        }
       }
 
     render() {
+
         return (
             <View style={styles.container}>
                 <Modal
@@ -30,19 +43,27 @@ export default class CreateEncounterModal extends React.Component {
                 animationType={'slide'}
                 onBackdropPress={() => CEMcloseModal()}>
                     <ScrollView style={styles.modal_container}>
-                        
-                        <MonsterNpcForm/>
 
-                        <Button light block style={styles.spacing}>
+                        {this.state.npcs.map(function(listitem, index){
+                            return(
+                                <MonsterNpcForm
+                                    key={index}
+                                    id={index}
+                                    updateForm={updNpc}
+                                />
+                            )
+                        })}
+
+                        <Button light block style={styles.spacing} onPress={() => extendForm()}>
                             <Text>Add Another Monster/NPC</Text>
                         </Button>
 
                         <View style={styles.flexrowBottom}>
-                            <Button danger style={styles.btn} onPress={() => CEMcloseModal()}>
-                                <Text style={{color: 'white'}}>Close</Text>
+                            <Button danger block style={styles.btn} onPress={() => CEMcloseModal()}>
+                                <Text style={{color:'white'}}>Close</Text>
                             </Button>
-                            <Button success style={{marginLeft: 5, flex: 1}}>
-                                <Text style={{color: 'white'}}>Confirm</Text>
+                            <Button success block style={styles.btn}>
+                                <Text style={{color:'white'}}>Confirm</Text>
                             </Button>
                         </View>
 
@@ -80,11 +101,10 @@ const styles = StyleSheet.create({
     flexrowBottom : {
         flexDirection: 'row',
         display: 'flex',
-        marginTop: 50,
+        marginTop: 100,
     },
     btn : {
         flex: 1,
-        width: 50,
     }
   })
 

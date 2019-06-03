@@ -1,22 +1,84 @@
 import React from 'react';
-import { View, Text, StyleSheet, } from 'react-native';
-import { Item, Label, Input, Button } from 'native-base';
+import { View, StyleSheet, } from 'react-native';
+import { Item, Label, Input } from 'native-base';
 import strings from '../constants/Strings';
-import Modal from "react-native-modal";
+import CheckBox from 'react-native-check-box'; 
+import PropTypes from 'prop-types';
+import NPC from '../classes/NPC';
 
 export default class MonsterNpcForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            name: null,
-            type: null,
-            total_health: null,
-            initiative: null,
-            is_legendary: false,
-            leg_res: null,
-            leg_actions: null,
+            id: this.props.id,
+            npc: new NPC(),
         };
-      }
+        this.updtName = this.updtName.bind(this);
+        this.updtType = this.updtType.bind(this);
+        this.updtHealth = this.updtHealth.bind(this);
+        this.updtIsLeg = this.updtIsLeg.bind(this);
+        this.updtLegAct = this.updtLegAct.bind(this);
+        this.updtLegRes = this.updtLegRes.bind(this);
+    }
+
+    // need to write function for number input
+    ensureDigits(number) {
+        if (isNaN(number)) {
+
+        }
+        return number;
+    }
+
+    updtName(text) {
+        let npc = this.state.npc;
+        npc.name = text;
+        this.setState({npc: npc});
+        this.props.updateForm(this.state.id, npc);
+    }
+
+    updtType(text) {
+        let npc = this.state.npc;
+        npc.type = text;
+        this.setState({npc: npc});
+        this.props.updateForm(this.state.id, npc);
+    }
+
+    updtHealth(text) {
+        let npc = this.state.npc;
+        npc.health = text;
+        this.setState({npc: npc});
+        this.props.updateForm(this.state.id, npc);
+    }
+    
+    updtInitiative(text) {
+        let npc = this.state.npc;
+        npc.initiative = text;
+        this.setState({npc: npc});
+        this.props.updateForm(this.state.id, npc);
+    }
+
+    updtIsLeg() {
+        let npc = this.state.npc;
+        npc.legendary = !npc.legendary;
+        npc.leg_actions = null;
+        npc.leg_resist = null;
+        this.setState({npc: npc});
+        this.props.updateForm(this.state.id, npc);
+    }
+
+    updtLegAct(text) {
+        let npc = this.state.npc;
+        npc.leg_actions = text;
+        this.setState({npc: npc});
+        this.props.updateForm(this.state.id, npc);
+    }
+
+    updtLegRes(text) {
+        let npc = this.state.npc;
+        npc.leg_resist = text;
+        this.setState({npc: npc});
+        this.props.updateForm(this.state.id, npc);
+    }
 
     render() {
         return (
@@ -27,8 +89,8 @@ export default class MonsterNpcForm extends React.Component {
                         <Input
                         name={strings.common_titles.name}
                         type="text"
-                        value={this.state.name}
-                        onChangeText={(text) => this.setState({name: text})}
+                        value={this.state.npc.name}
+                        onChangeText={(text) => this.updtName(text)}
                         />
                     </Item>
                     <Item floatingLabel style={styles.formItems}>
@@ -36,35 +98,80 @@ export default class MonsterNpcForm extends React.Component {
                         <Input
                         name={strings.common_titles.type}
                         type="text"
-                        value={this.state.type}
-                        onChangeText={(text) => this.setState({type: text})}
+                        value={this.state.npc.type}
+                        onChangeText={(text) => this.updtType(text)}
                         />
                     </Item>
                 </View>
+        
                 <View style={styles.flexrow}>
                     <Item floatingLabel style={styles.formItems}>
                         <Label>{strings.common_titles.health}</Label>
                         <Input
                         name={strings.common_titles.health}
-                        type="text"
-                        value={this.state.total_health}
-                        onChangeText={(text) => this.setState({total_health: text})}
+                        type="number"
+                        keyboardType="numeric"
+                        value={this.state.npc.health}
+                        onChangeText={(text) => this.updtHealth(text)}
                         />
                     </Item>
                     <Item floatingLabel style={styles.formItems}>
                         <Label>{strings.common_titles.initiative}</Label>
                         <Input
                         name={strings.common_titles.initiative}
-                        type="text"
+                        type="number"
+                        keyboardType="numeric"
                         value={this.state.initiative}
-                        onChangeText={(text) => this.setState({initiative: text})}
+                        onChangeText={(text) => this.updtInitiative(text)}
                         />
                     </Item>
                 </View>
+
+                <CheckBox
+                    style={styles.checkboxpos}
+                    onClick={()=>{ this.updtIsLeg() }}
+                    isChecked={this.state.npc.legendary}
+                    rightText={strings.common_titles.legend}
+                    rightTextStyle={styles.checktext}
+                    checkedCheckBoxColor= {styles.checkColor.color}
+                    uncheckedCheckBoxColor= {styles.checkColor.color}
+                />
+                
+                {this.state.npc.legendary ? 
+                <View style={styles.flexrow}>
+                    <Item floatingLabel style={styles.formItems}>
+                        <Label>{strings.common_titles.legActions}</Label>
+                        <Input
+                        name={strings.common_titles.legActions}
+                        type="number"
+                        keyboardType="numeric"
+                        value={this.state.npc.leg_actions}
+                        onChangeText={(text) => this.updtLegAct(text)}
+                        />
+                    </Item>
+                    <Item floatingLabel style={styles.formItems}>
+                        <Label>{strings.common_titles.legResist}</Label>
+                        <Input
+                        name={strings.common_titles.legResist}
+                        type="number"
+                        keyboardType="numeric"
+                        value={this.state.npc.leg_resist}
+                        onChangeText={(text) => this.updtLegRes(text)}
+                        />
+                    </Item>
+                </View>
+                : <View/>}
                 
             </View>
         );
     }
+}
+
+MonsterNpcForm.propTypes = {
+    id: PropTypes.number
+  }
+MonsterNpcForm.defaultProps = {
+    id: -1
 }
 
 const styles = StyleSheet.create({
@@ -79,6 +186,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         display: 'flex',
         alignItems: 'center',
+        marginTop: 5,
     },
     formItems: {
         flex: 1,
@@ -98,13 +206,20 @@ const styles = StyleSheet.create({
     add_button: {
       borderRadius: 5,
     },
-    formInput:{
-      borderColor:'#CAECE4',
-      height: 60,       
-    },
     spacing: {
         marginBottom: 10,
         borderRadius: 5,
     },
+    checkboxpos: {
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    checkColor: {
+        color: '#585858'
+    },
+    checktext : {
+        fontSize: 17, 
+        color: '#484848'
+    }
   })
 

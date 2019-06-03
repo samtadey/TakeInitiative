@@ -1,10 +1,16 @@
 export default {
+  common_verbs: {
+    close: 'Close',
+    confirm: 'Confirm',
+  },
   common_titles : {
     name: 'Name',
     type: 'Type',
     health: 'Total Health',
     initiative: 'Initiative',
     legend: 'Legendary',
+    legActions: 'Actions',
+    legResist: 'Resistances',
   },
   drawer : {
     initDrawerAdvance: 'Advance Initiative Order',
