@@ -10,13 +10,13 @@ import { Icon, Button } from 'native-base';
 import Drawer from 'react-native-drawer'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import InitiativeActionsDrawer from '../components/InitiativeActionsDrawer';
+import InitiativeItem from '../components/InitiativeItem';
 
-var party = [
-  {name: "Sam", player_class: "Paladin", initiative: 25},
-  {name: "Ted", player_class: "Rogue", initiative: 24},
-  {name: "Fred", player_class: "Ranger", initiative: 2}
+let party = [
+  {name: "Sam", adv_class: "Paladin", initiative: 25},
+  {name: "Ted", adv_class: "Rogue", initiative: 24},
+  {name: "Fred", adv_class: "Ranger", initiative: 2}
 ];
-
 
 export default class InitiativeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -64,10 +64,20 @@ export default class InitiativeScreen extends React.Component {
         tweenHandler={(ratio) => ({
           main: { opacity:(2-ratio)/2 }
         })}>
-          <ScrollView style={styles.container}>    
+          <ScrollView>    
 
             <View style={styles.container}>
-              <Text>Hello Werld</Text>
+
+              {party.map(function(listitem, index){
+                return(
+                <InitiativeItem 
+                    key={index}
+                    name={listitem.name} 
+                    adv_class={listitem.adv_class}
+                    initiative={listitem.initiative}
+                />)
+              })}
+
             </View>
 
           </ScrollView>
@@ -80,5 +90,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 10,
   },
 });
