@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, } from 'react-native';
-import { Item, Label, Input } from 'native-base';
+import { View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import { Item, Label, Input, Icon } from 'native-base';
 import strings from '../constants/Strings';
 import CheckBox from 'react-native-check-box'; 
 import PropTypes from 'prop-types';
@@ -13,6 +13,7 @@ export default class MonsterNpcForm extends React.Component {
             id: this.props.id,
             npc: new NPC(),
         };
+        this.deleteFormItem = this.deleteFormItem.bind(this);
         this.updtName = this.updtName.bind(this);
         this.updtType = this.updtType.bind(this);
         this.updtHealth = this.updtHealth.bind(this);
@@ -27,6 +28,11 @@ export default class MonsterNpcForm extends React.Component {
 
         }
         return number;
+    }
+
+    deleteFormItem() {
+        //let npc = this.state.npc;
+        this.props.deleteItem(this.state.id);
     }
 
     updtName(text) {
@@ -83,6 +89,11 @@ export default class MonsterNpcForm extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <View style={styles.closeIconRow}>
+                    <TouchableOpacity onPress={this.deleteFormItem} style={styles.closeIcon}>
+                        <Icon name={Platform.OS === 'ios' ? 'ios-close-circle-outline' : 'md-close-circle-outline'} style={{marginRight: 10}}/>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.flexrow}>
                     <Item floatingLabel style={styles.formItems}>
                         <Label>{strings.common_titles.name}</Label>
@@ -181,6 +192,16 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderRadius: 5,
       marginBottom: 10,
+    },
+    closeIconRow: {
+        flexDirection: 'row',
+        display: 'flex',
+        alignItems: 'flex-end',
+        //backgroundColor: 'blue'
+    },
+    closeIcon: {
+        flex: 1,
+        alignItems: 'flex-end'
     },
     flexrow: {
         flexDirection: 'row',

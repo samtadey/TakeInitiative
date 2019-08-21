@@ -32,6 +32,11 @@ export default class CreateEncounterModal extends React.Component {
             form[id] = npc;
             this.setState({npcs: form});
         }
+        delNpc = (id) => {
+            let form = this.state.npcs;
+            form.splice(id,1);
+            this.setState({npcs: form});
+        }
       }
 
     render() {
@@ -50,6 +55,7 @@ export default class CreateEncounterModal extends React.Component {
                                     key={index}
                                     id={index}
                                     updateForm={updNpc}
+                                    deleteItem={delNpc}
                                 />
                             )
                         })}
