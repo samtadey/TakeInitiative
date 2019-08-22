@@ -3,15 +3,17 @@ import { View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import { Item, Label, Input, Icon } from 'native-base';
 import strings from '../constants/Strings';
 import CheckBox from 'react-native-check-box'; 
+import ModalSelector from 'react-native-modal-selector';
 import PropTypes from 'prop-types';
 import NPC from '../classes/NPC';
+import monsterApi from '../api/dnd5api'
 
 export default class MonsterNpcForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            id: this.props.id,
             npc: new NPC(),
+            monsters: [],
         };
         this.deleteFormItem = this.deleteFormItem.bind(this);
         this.updtName = this.updtName.bind(this);
@@ -20,6 +22,51 @@ export default class MonsterNpcForm extends React.Component {
         this.updtIsLeg = this.updtIsLeg.bind(this);
         this.updtLegAct = this.updtLegAct.bind(this);
         this.updtLegRes = this.updtLegRes.bind(this);
+
+        this.loadMonsters = this.loadMonsters.bind(this);
+        this.loadMonsterInfo = this.loadMonsterInfo.bind(this);
+    }
+
+    componentDidMount() {
+        this.loadMonsters();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.id !== prevProps.id) {
+          this.setState({
+            npc: this.props.npc
+          })
+        }
+      }
+
+    async loadMonsters() {
+        let response = await monsterApi.getMonsters();
+        response = response.data;
+        let monstersRefined = [];
+
+        for (let i = 0; i < response.count; i++)
+        {
+            monstersRefined.push({key: i, label: response.results[i].name, url: response.results[i].url});
+        }
+        this.setState({monsters: monstersRefined});
+    }
+
+    async loadMonsterInfo(url) {
+        let response = await monsterApi.getMonsterInfo(url);
+        response = response.data;
+        alert(JSON.stringify(response));
+
+        this.updtName(response.name);
+        this.updtType(response.type);
+        this.updtHealth(response.hit_points.toString());
+
+        // //TODO
+        // if (response.legendary_actions.length > 0)
+        // {
+        //     this.updtIsLeg();
+        //     this.updtLegAct("3");
+        //     this.updtLegRes("3");
+        // }
     }
 
     // need to write function for number input
@@ -31,36 +78,35 @@ export default class MonsterNpcForm extends React.Component {
     }
 
     deleteFormItem() {
-        //let npc = this.state.npc;
-        this.props.deleteItem(this.state.id);
+        this.props.deleteItem(this.props.id);
     }
 
-    updtName(text) {
+    async updtName(text) {
         let npc = this.state.npc;
         npc.name = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.state.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
 
     updtType(text) {
         let npc = this.state.npc;
         npc.type = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.state.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
 
     updtHealth(text) {
         let npc = this.state.npc;
         npc.health = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.state.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
     
     updtInitiative(text) {
         let npc = this.state.npc;
         npc.initiative = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.state.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
 
     updtIsLeg() {
@@ -69,21 +115,21 @@ export default class MonsterNpcForm extends React.Component {
         npc.leg_actions = null;
         npc.leg_resist = null;
         this.setState({npc: npc});
-        this.props.updateForm(this.state.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
 
     updtLegAct(text) {
         let npc = this.state.npc;
         npc.leg_actions = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.state.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
 
     updtLegRes(text) {
         let npc = this.state.npc;
         npc.leg_resist = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.state.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
 
     render() {
@@ -94,6 +140,16 @@ export default class MonsterNpcForm extends React.Component {
                         <Icon name={Platform.OS === 'ios' ? 'ios-close-circle-outline' : 'md-close-circle-outline'} style={{marginRight: 10}}/>
                     </TouchableOpacity>
                 </View>
+
+                <View style={styles.flexrow}>
+                    <ModalSelector
+                    data={this.state.monsters}
+                    style={styles.formItems}
+                    initValue={strings.common_titles.monsterFormName}
+                    // onChange={(option)=>{ this.updtName(option.label) }} />
+                    onChange={(option)=>{ this.loadMonsterInfo(option.url) }} />
+                </View>
+
                 <View style={styles.flexrow}>
                     <Item floatingLabel style={styles.formItems}>
                         <Label>{strings.common_titles.name}</Label>
@@ -138,7 +194,7 @@ export default class MonsterNpcForm extends React.Component {
                     </Item>
                 </View>
 
-                <CheckBox
+                {/* <CheckBox
                     style={styles.checkboxpos}
                     onClick={()=>{ this.updtIsLeg() }}
                     isChecked={this.state.npc.legendary}
@@ -171,7 +227,7 @@ export default class MonsterNpcForm extends React.Component {
                         />
                     </Item>
                 </View>
-                : <View/>}
+                : <View/>} */}
                 
             </View>
         );

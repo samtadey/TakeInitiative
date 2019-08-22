@@ -11,6 +11,7 @@ export default {
     legend: 'Legendary',
     legActions: 'Actions',
     legResist: 'Resistances',
+    monsterFormName: 'Choose Monster',
   },
   drawer : {
     initDrawerAdvance: 'Advance Initiative Order',

@@ -7,13 +7,17 @@ import MonsterNpcForm from '../components/MonsterNpcForm';
 import { ScrollView } from 'react-native-gesture-handler';
 import NPC from '../classes/NPC';
 
+
 export default class CreateEncounterModal extends React.Component {
+
     constructor(props){
         super(props);
         this.state = {
           CEMmodalVisible: false,
           npcs: [new NPC()],
+          monsters: "T",
         };
+
         CEMopenModal = () => {
           this.setState({
             CEMmodalVisible: true
@@ -37,10 +41,36 @@ export default class CreateEncounterModal extends React.Component {
             form.splice(id,1);
             this.setState({npcs: form});
         }
-      }
+    }
+
+    // componentDidUpdate(prevState) {
+    //     if (this.state.npcs.length !== prevState.npcs.length) {
+    //         this.setState({npcs: this.state.npcs});
+    //     }
+    // }
+
+    // componentDidMount() {
+    //     this.loadMonsters();
+    // }
+
+    // async loadMonsters() {
+    //     let response = await monsterApi.getMonsters();
+    //     //this.setState({monsters: response.data});
+    //     response = response.data;
+    //     //alert("Load" + JSON.stringify(response));
+
+    //     let monstersRefined = [];
+
+    //     for (let i = 0; i < response.count; i++)
+    //     {
+    //         monstersRefined.push({key: i, label: response.results[i].name, url: response.results[i].url});
+    //     }
+    //     alert("Load" + JSON.stringify(monstersRefined));
+    //     this.setState({monsters: monstersRefined});
+    // }
+
 
     render() {
-
         return (
             <View style={styles.container}>
                 <Modal

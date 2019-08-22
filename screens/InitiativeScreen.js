@@ -33,6 +33,7 @@ export default class InitiativeScreen extends React.Component {
     this.state = {
       drawer_open: false,
     }
+
     openDrawer = () => {
       this.setState({drawer_open: true});
     }
@@ -42,7 +43,7 @@ export default class InitiativeScreen extends React.Component {
     this.props.navigation.setParams({ 
         handleDrawer: openDrawer,
     });
-}
+  }
 
   render() {
 

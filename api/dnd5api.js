@@ -1,18 +1,19 @@
-const ENV = require('./../.env.json')
-import axios from "axios"
+const ENV = require('./../.env.json');
+import axios from "axios";
+//import ENV from "../.env.json";
 
 export default {
 
   async getMonsters() {
-    return await axios.get(`${ENV.server}/monsters`);
+    return await axios.get(`http://dnd5eapi.co/api/monsters/`);
   },
 
-  async getMonsterInfo(id) {
-      return await axios.get(`${ENV.server}/monsters/${id}`);
-  },
+  // async getMonsters() {
+  //   return await axios.get(`${ENV}/monsters/`);
+  // },
 
-  async getRopisToken(domain) {
-    return axios.get(`${ENV.server}/ropis/auth/get-token`, { params: { domain } }).then(response => response.data);
+  async getMonsterInfo(url) {
+    return await axios.get(`${url}`);
   },
 
 }
