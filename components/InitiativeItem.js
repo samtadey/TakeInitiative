@@ -20,7 +20,7 @@ export default class InitiativeItem extends React.Component {
                     <Text>{this.props.name}</Text>
                   </View>
                   <View style={styles.flexrow}>
-                    <Text style={styles.classifier}>Class: </Text>
+                    <Text style={styles.classifier}>Type: </Text>
                     <Text>{this.props.adv_class}</Text>
                   </View>
                 </View>

@@ -23,8 +23,8 @@ class InitiativeActionsDrawer extends React.Component {
                     {/* <Button success full style={styles.spacing}>
                         <Text style={{color: 'white'}}>{strings.drawer.initDrawerCreate}</Text>
                     </Button> */}
-                    <CreateEncounterModal/>
-                    <Button danger full style={styles.spacing}>
+                    <CreateEncounterModal generate_list={this.props.generate_list}/>
+                    <Button danger full style={styles.spacing} onPress={() => this.props.clear_list()}>
                         <Text style={{color: 'white'}}>{strings.drawer.initDrawerClear}</Text>
                     </Button>
                 </View>

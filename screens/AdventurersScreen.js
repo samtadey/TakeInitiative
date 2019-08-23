@@ -20,7 +20,7 @@ let adventurers = [
 
 export default class AdventurersScreen extends React.Component {
   static navigationOptions = {
-    title: 'Party here',
+    title: 'Adventurers',
   };
 
   constructor(props){

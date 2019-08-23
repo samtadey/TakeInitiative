@@ -11,7 +11,12 @@ export default {
     legend: 'Legendary',
     legActions: 'Actions',
     legResist: 'Resistances',
+  },
+  create_encounter_form : {
+    addMonster: 'Add Monster/NPC',
+    addAdventurer: 'Add Adventurer',
     monsterFormName: 'Choose Monster',
+    adventurerFormName: 'Choose Adventurer',
   },
   drawer : {
     initDrawerAdvance: 'Advance Initiative Order',

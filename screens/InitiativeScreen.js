@@ -13,9 +13,9 @@ import InitiativeActionsDrawer from '../components/InitiativeActionsDrawer';
 import InitiativeItem from '../components/InitiativeItem';
 
 let party = [
-  {name: "Sam", adv_class: "Paladin", initiative: 25},
-  {name: "Ted", adv_class: "Rogue", initiative: 24},
-  {name: "Fred", adv_class: "Ranger", initiative: 2}
+  // {name: "Sam", adv_class: "Paladin", initiative: 25},
+  // {name: "Ted", adv_class: "Rogue", initiative: 24},
+  // {name: "Fred", adv_class: "Ranger", initiative: 2}
 ];
 
 export default class InitiativeScreen extends React.Component {
@@ -32,10 +32,19 @@ export default class InitiativeScreen extends React.Component {
     super(props);
     this.state = {
       drawer_open: false,
+      initiative_list: [],
     }
 
     openDrawer = () => {
       this.setState({drawer_open: true});
+    }
+
+    generate_list = (list) => {
+      this.setState({initiative_list: list});
+    }
+
+    clear_list = () => {
+      this.setState({initiative_list: []});
     }
   }
 
@@ -55,7 +64,7 @@ export default class InitiativeScreen extends React.Component {
     return (
       <Drawer
         type="overlay"
-        content={<InitiativeActionsDrawer/>}
+        content={<InitiativeActionsDrawer generate_list={generate_list} clear_list={clear_list}/>}
         tapToClose={true}
         open={this.state.drawer_open}
         openDrawerOffset={0.2} // 20% gap on the right side of drawer
@@ -69,12 +78,12 @@ export default class InitiativeScreen extends React.Component {
 
             <View style={styles.container}>
 
-              {party.map(function(listitem, index){
+              {this.state.initiative_list.map(function(listitem, index){
                 return(
                 <InitiativeItem 
                     key={index}
                     name={listitem.name} 
-                    adv_class={listitem.adv_class}
+                    adv_class={listitem.type}
                     initiative={listitem.initiative}
                 />)
               })}

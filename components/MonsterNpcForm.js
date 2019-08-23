@@ -19,6 +19,7 @@ export default class MonsterNpcForm extends React.Component {
         this.updtName = this.updtName.bind(this);
         this.updtType = this.updtType.bind(this);
         this.updtHealth = this.updtHealth.bind(this);
+        this.updtInitiative = this.updtInitiative.bind(this);
         this.updtIsLeg = this.updtIsLeg.bind(this);
         this.updtLegAct = this.updtLegAct.bind(this);
         this.updtLegRes = this.updtLegRes.bind(this);
@@ -54,7 +55,7 @@ export default class MonsterNpcForm extends React.Component {
     async loadMonsterInfo(url) {
         let response = await monsterApi.getMonsterInfo(url);
         response = response.data;
-        alert(JSON.stringify(response));
+        //alert(JSON.stringify(response));
 
         this.updtName(response.name);
         this.updtType(response.type);
@@ -70,12 +71,12 @@ export default class MonsterNpcForm extends React.Component {
     }
 
     // need to write function for number input
-    ensureDigits(number) {
-        if (isNaN(number)) {
+    // ensureDigits(number) {
+    //     if (isNaN(number)) {
 
-        }
-        return number;
-    }
+    //     }
+    //     return number;
+    // }
 
     deleteFormItem() {
         this.props.deleteItem(this.props.id);
@@ -135,64 +136,62 @@ export default class MonsterNpcForm extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+
                 <View style={styles.closeIconRow}>
+
+                    <ModalSelector
+                    data={this.state.monsters}
+                    style={styles.modalselector}
+                    initValue={strings.create_encounter_form.monsterFormName}
+                    // onChange={(option)=>{ this.updtName(option.label) }} />
+                    onChange={(option)=>{ this.loadMonsterInfo(option.url) }} />
+
                     <TouchableOpacity onPress={this.deleteFormItem} style={styles.closeIcon}>
                         <Icon name={Platform.OS === 'ios' ? 'ios-close-circle-outline' : 'md-close-circle-outline'} style={{marginRight: 10}}/>
                     </TouchableOpacity>
+
                 </View>
 
-                <View style={styles.flexrow}>
-                    <ModalSelector
-                    data={this.state.monsters}
-                    style={styles.formItems}
-                    initValue={strings.common_titles.monsterFormName}
-                    // onChange={(option)=>{ this.updtName(option.label) }} />
-                    onChange={(option)=>{ this.loadMonsterInfo(option.url) }} />
-                </View>
+                <Item floatingLabel style={styles.formItems}>
+                    <Label>{strings.common_titles.name}</Label>
+                    <Input
+                    name={strings.common_titles.name}
+                    type="text"
+                    value={this.state.npc.name}
+                    onChangeText={(text) => this.updtName(text)}
+                    />
+                </Item>
 
-                <View style={styles.flexrow}>
-                    <Item floatingLabel style={styles.formItems}>
-                        <Label>{strings.common_titles.name}</Label>
-                        <Input
-                        name={strings.common_titles.name}
-                        type="text"
-                        value={this.state.npc.name}
-                        onChangeText={(text) => this.updtName(text)}
-                        />
-                    </Item>
-                    <Item floatingLabel style={styles.formItems}>
-                        <Label>{strings.common_titles.type}</Label>
-                        <Input
-                        name={strings.common_titles.type}
-                        type="text"
-                        value={this.state.npc.type}
-                        onChangeText={(text) => this.updtType(text)}
-                        />
-                    </Item>
-                </View>
+                <Item floatingLabel style={styles.formItems}>
+                    <Label>{strings.common_titles.type}</Label>
+                    <Input
+                    name={strings.common_titles.type}
+                    type="text"
+                    value={this.state.npc.type}
+                    onChangeText={(text) => this.updtType(text)}
+                    />
+                </Item>
         
-                <View style={styles.flexrow}>
-                    <Item floatingLabel style={styles.formItems}>
-                        <Label>{strings.common_titles.health}</Label>
-                        <Input
-                        name={strings.common_titles.health}
-                        type="number"
-                        keyboardType="numeric"
-                        value={this.state.npc.health}
-                        onChangeText={(text) => this.updtHealth(text)}
-                        />
-                    </Item>
-                    <Item floatingLabel style={styles.formItems}>
-                        <Label>{strings.common_titles.initiative}</Label>
-                        <Input
-                        name={strings.common_titles.initiative}
-                        type="number"
-                        keyboardType="numeric"
-                        value={this.state.initiative}
-                        onChangeText={(text) => this.updtInitiative(text)}
-                        />
-                    </Item>
-                </View>
+                <Item floatingLabel style={styles.formItems}>
+                    <Label>{strings.common_titles.health}</Label>
+                    <Input
+                    name={strings.common_titles.health}
+                    type="number"
+                    keyboardType="numeric"
+                    value={this.state.npc.health}
+                    onChangeText={(text) => this.updtHealth(text)}
+                    />
+                </Item>
+                <Item floatingLabel style={styles.formItems}>
+                    <Label>{strings.common_titles.initiative}</Label>
+                    <Input
+                    name={strings.common_titles.initiative}
+                    type="number"
+                    keyboardType="numeric"
+                    value={this.state.npc.initiative}
+                    onChangeText={(text) => this.updtInitiative(text)}
+                    />
+                </Item>
 
                 {/* <CheckBox
                     style={styles.checkboxpos}
@@ -252,8 +251,12 @@ const styles = StyleSheet.create({
     closeIconRow: {
         flexDirection: 'row',
         display: 'flex',
-        alignItems: 'flex-end',
+        //alignItems: 'flex-end',
         //backgroundColor: 'blue'
+    },
+    modalselector : {
+        flex: 4,
+        alignItems: 'flex-start'
     },
     closeIcon: {
         flex: 1,
@@ -266,6 +269,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     formItems: {
+        marginTop: 5,
         flex: 1,
         alignItems: 'flex-start'
     },
