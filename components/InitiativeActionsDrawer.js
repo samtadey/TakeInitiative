@@ -4,25 +4,24 @@ import { Button } from 'native-base';
 import { withNavigation } from 'react-navigation';
 import strings from '../constants/Strings'
 import CreateEncounterModal from '../components/CreateEncounterModal';
+import AddUnitModal from '../components/AddUnitModal';
 
 class InitiativeActionsDrawer extends React.Component {
 
     render() {
         return (
             <View style={styles.container}>
-                <Button light full style={styles.spacing}>
+                <Button light full style={styles.spacing} onPress={() => this.props.advance_list()}>
                     <Text>{strings.drawer.initDrawerAdvance}</Text>
                 </Button>
-                <Button light full style={styles.spacing}>
-                    <Text>{strings.drawer.initDrawerAdd}</Text>
-                </Button>
-                <Button light full style={styles.spacing}>
+
+                <AddUnitModal add_unit={this.props.add_unit}/>
+
+                {/* <Button light full style={styles.spacing}>
                     <Text>{strings.drawer.initDrawerRemove}</Text>
-                </Button>
+                </Button> */}
+
                 <View style={styles.bottom}>
-                    {/* <Button success full style={styles.spacing}>
-                        <Text style={{color: 'white'}}>{strings.drawer.initDrawerCreate}</Text>
-                    </Button> */}
                     <CreateEncounterModal generate_list={this.props.generate_list}/>
                     <Button danger full style={styles.spacing} onPress={() => this.props.clear_list()}>
                         <Text style={{color: 'white'}}>{strings.drawer.initDrawerClear}</Text>

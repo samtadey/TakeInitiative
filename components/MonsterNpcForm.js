@@ -137,8 +137,9 @@ export default class MonsterNpcForm extends React.Component {
         return (
             <View style={styles.container}>
 
+                {this.props.single != 1 ?
                 <View style={styles.closeIconRow}>
-
+                     
                     <ModalSelector
                     data={this.state.monsters}
                     style={styles.modalselector}
@@ -149,8 +150,8 @@ export default class MonsterNpcForm extends React.Component {
                     <TouchableOpacity onPress={this.deleteFormItem} style={styles.closeIcon}>
                         <Icon name={Platform.OS === 'ios' ? 'ios-close-circle-outline' : 'md-close-circle-outline'} style={{marginRight: 10}}/>
                     </TouchableOpacity>
-
                 </View>
+                : <View/>}
 
                 <Item floatingLabel style={styles.formItems}>
                     <Label>{strings.common_titles.name}</Label>
@@ -192,41 +193,6 @@ export default class MonsterNpcForm extends React.Component {
                     onChangeText={(text) => this.updtInitiative(text)}
                     />
                 </Item>
-
-                {/* <CheckBox
-                    style={styles.checkboxpos}
-                    onClick={()=>{ this.updtIsLeg() }}
-                    isChecked={this.state.npc.legendary}
-                    rightText={strings.common_titles.legend}
-                    rightTextStyle={styles.checktext}
-                    checkedCheckBoxColor= {styles.checkColor.color}
-                    uncheckedCheckBoxColor= {styles.checkColor.color}
-                />
-                
-                {this.state.npc.legendary ? 
-                <View style={styles.flexrow}>
-                    <Item floatingLabel style={styles.formItems}>
-                        <Label>{strings.common_titles.legActions}</Label>
-                        <Input
-                        name={strings.common_titles.legActions}
-                        type="number"
-                        keyboardType="numeric"
-                        value={this.state.npc.leg_actions}
-                        onChangeText={(text) => this.updtLegAct(text)}
-                        />
-                    </Item>
-                    <Item floatingLabel style={styles.formItems}>
-                        <Label>{strings.common_titles.legResist}</Label>
-                        <Input
-                        name={strings.common_titles.legResist}
-                        type="number"
-                        keyboardType="numeric"
-                        value={this.state.npc.leg_resist}
-                        onChangeText={(text) => this.updtLegRes(text)}
-                        />
-                    </Item>
-                </View>
-                : <View/>} */}
                 
             </View>
         );

@@ -117,6 +117,8 @@ export default class CreateEncounterModal extends React.Component {
                 onBackdropPress={() => CEMcloseModal()}>
                     <ScrollView style={styles.modal_container}>
 
+                        <Text style={styles.title}>{strings.drawer.initDrawerCreate}</Text>
+
                         {this.state.npcs.map(function(listitem, index){
                             return(
                                 <MonsterNpcForm
@@ -172,6 +174,11 @@ export default class CreateEncounterModal extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+    },
+    title : {
+        fontWeight : 'bold',
+        fontSize : 24,
+        marginBottom : 10,
     },
     modal_container: {
       backgroundColor: '#FFFFFF',
