@@ -77,11 +77,49 @@ export default class AddUnitModal extends React.Component {
             </View>
         );
     }
+
+    // render() {
+    //     return (
+    //       <View style={styles.container}>
+    //         <Modal
+    //               visible={this.state.AEMmodalVisible}
+    //               animationType={'slide'}
+    //               onBackdropPress={() => AEMcloseModal()}
+    //         >
+    //         <View style={styles.modal_container}>
+    
+    //         <Text style={styles.title}>{strings.drawer.initDrawerAdd}</Text>
+
+    //         <MonsterNpcForm
+    //             single={1}
+    //             updateForm={updUnit}
+    //         />
+    
+    //             <View style={styles.flexrow}>
+    //                 <Button danger block style={styles.btn} onPress={() => AEMcloseModal()}>
+    //                     <Text style={{color:'white'}}>Close</Text>
+    //                 </Button>
+    //                 <Button success block style={styles.btn}>
+    //                     <Text style={{color:'white'}}>Confirm</Text>
+    //                 </Button>
+    //             </View>
+    
+    
+    //         </View>
+    //         </Modal>
+    
+    //         <Button light block onPress={() => AEMopenModal()} style={styles.add_button}>
+    //             <Text>{strings.drawer.initDrawerAdd}</Text>
+    //         </Button>
+    //       </View>
+    //     );
+    //   }
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      //flex: 1,
+      //backgroundColor: 'red',
     },
     title : {
         fontWeight : 'bold',

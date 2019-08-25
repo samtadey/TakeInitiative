@@ -38,7 +38,7 @@ export default class MonsterNpcForm extends React.Component {
             npc: this.props.npc
           })
         }
-      }
+    }
 
     async loadMonsters() {
         let response = await monsterApi.getMonsters();

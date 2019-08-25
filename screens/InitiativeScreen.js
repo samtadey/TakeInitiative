@@ -3,20 +3,16 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   View,
+  AsyncStorage,
 } from 'react-native';
 import { Icon, Button } from 'native-base';
 import Drawer from 'react-native-drawer'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import asyncstorage from '../storage/asyncstorage';
+import strings from '../constants//Strings';
 import InitiativeActionsDrawer from '../components/InitiativeActionsDrawer';
 import InitiativeItem from '../components/InitiativeItem';
-
-let party = [
-  // {name: "Sam", adv_class: "Paladin", initiative: 25},
-  // {name: "Ted", adv_class: "Rogue", initiative: 24},
-  // {name: "Fred", adv_class: "Ranger", initiative: 2}
-];
 
 export default class InitiativeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -39,12 +35,23 @@ export default class InitiativeScreen extends React.Component {
       this.setState({drawer_open: true});
     }
 
-    generate_list = (list) => {
+    generate_list = async (list) => {
       this.setState({initiative_list: list});
+
+      await AsyncStorage.setItem(strings.keys.initiative_list, JSON.stringify(list))
+      .then(json => console.log('success!'))
+      .catch(error => console.log('error!'));
     }
 
     clear_list = () => {
       this.setState({initiative_list: []});
+    }
+
+    retrieve_list = async () => {
+      await AsyncStorage.getItem(strings.keys.initiative_list)
+      .then(req => JSON.parse(req))
+      .then(json => json ? this.setState({initiative_list: json}) : "")
+      .catch(error => console.log('error!'));
     }
 
     advance_list = () => {
@@ -85,7 +92,7 @@ export default class InitiativeScreen extends React.Component {
           first = parseInt(list[i].initiative, 10);
 
           //if (i != list.length - 1)
-            second = parseInt(list[i + 1].initiative, 10);
+          second = parseInt(list[i + 1].initiative, 10);
           // else 
           //   second = parseInt(list[0].initiative, 10);
         
@@ -115,6 +122,7 @@ export default class InitiativeScreen extends React.Component {
     this.props.navigation.setParams({ 
         handleDrawer: openDrawer,
     });
+    retrieve_list();
   }
 
   render() {
@@ -127,7 +135,7 @@ export default class InitiativeScreen extends React.Component {
     return (
       <Drawer
         type="overlay"
-        content={<InitiativeActionsDrawer generate_list={generate_list} advance_list={advance_list} add_unit={add_unit} clear_list={clear_list}/>}
+        content={<InitiativeActionsDrawer list={this.state.initiative_list} generate_list={generate_list} advance_list={advance_list} add_unit={add_unit} clear_list={clear_list}/>}
         tapToClose={true}
         open={this.state.drawer_open}
         openDrawerOffset={0.2} // 20% gap on the right side of drawer
