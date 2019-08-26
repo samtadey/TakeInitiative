@@ -13,6 +13,7 @@ import Adventurer from '../components/Adventurer';
 import dnddata from '../constants/dnddata'
 import NPC from '../classes/NPC';
 import strings from '../constants/Strings';
+import RemoveAdventurerModal from '../components/RemoveAdventurerModal';
 
 // let adventurers = [
 //     {modal_name: "Balasar", modal_adv_class: "Paladin", modal_race: "Dragonborn", image: require("../assets/character_icons/male_paladin.png")},
@@ -128,7 +129,7 @@ export default class AdventurersScreen extends React.Component {
             initValue={this.state.modal_adv_class == null ? "Choose Race" : this.state.modal_race}
             onChange={(option)=>{ this.setState({modal_race: option.label}) }} />
 
-          <View style={styles.flexrow}>
+            <View style={styles.flexrow}>
                 <Button danger block style={styles.btn} onPress={() => closeModal()}>
                     <Text style={{color:'white'}}>Close</Text>
                 </Button>
@@ -153,10 +154,15 @@ export default class AdventurersScreen extends React.Component {
                     editAdv={openModal}
                 />)
           })}
-          <Button light block onPress={() => openModal(null, null, null, null, 0)} style={styles.add_button}>
-              <Text>Add Adventurer</Text>
+          <Button light block onPress={() => openModal(null, null, null, null, 0)} style={styles.btn}>
+              <Text>{strings.create_encounter_form.addAdventurer}</Text>
           </Button>
         </ScrollView>
+
+        <View style={styles.bottom}>
+          <RemoveAdventurerModal/>
+        </View>
+        
       </View>
     );
   }
@@ -166,6 +172,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
+  },
+  text: {
+    color: 'white'
+  },
+  bottom: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    justifyContent: 'flex-end',
+    padding: 10
   },
   modal_container: {
     backgroundColor: '#FFFFFF',

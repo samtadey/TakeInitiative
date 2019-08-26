@@ -18,6 +18,7 @@ export default {
   create_encounter_form : {
     addMonster: 'Add Monster/NPC',
     addAdventurer: 'Add Adventurer',
+    removeAdventurer: 'Remove Adventurer',
     monsterFormName: 'Choose Monster',
     adventurerFormName: 'Choose Adventurer',
   },
