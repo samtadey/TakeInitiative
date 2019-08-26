@@ -32,5 +32,6 @@ export default {
 
   keys : {
     initiative_list: 'initiative_list',
+    adventurers: 'adventurers',
   },
 };

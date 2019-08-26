@@ -2,6 +2,7 @@ export default class NPC {
     constructor() {
         this.name = '';
         this.type = '';
+        this.race = '';
         this.health = '';
         this.initiative = '';
         this.legendary = false;

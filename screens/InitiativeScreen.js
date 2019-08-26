@@ -43,15 +43,15 @@ export default class InitiativeScreen extends React.Component {
       .catch(error => console.log('error!'));
     }
 
-    clear_list = () => {
-      this.setState({initiative_list: []});
-    }
-
     retrieve_list = async () => {
       await AsyncStorage.getItem(strings.keys.initiative_list)
       .then(req => JSON.parse(req))
       .then(json => json ? this.setState({initiative_list: json}) : "")
       .catch(error => console.log('error!'));
+    }
+
+    clear_list = () => {
+      this.setState({initiative_list: []});
     }
 
     advance_list = () => {
@@ -123,6 +123,13 @@ export default class InitiativeScreen extends React.Component {
         handleDrawer: openDrawer,
     });
     retrieve_list();
+  }
+
+  async componentWillUnmount() {
+    //alert("Test");
+    await AsyncStorage.setItem(strings.keys.initiative_list, JSON.stringify(this.state.initiative_list))
+      .then(json => console.log('success!'))
+      .catch(error => console.log('error!'));
   }
 
   render() {

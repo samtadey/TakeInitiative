@@ -8,7 +8,7 @@ export default class Adventurer extends React.Component {
 
     render() {
         return (
-            <TouchableOpacity onPress={() => {this.props.editAdv(this.props.name, this.props.adv_class, this.props.race)}}>
+            <TouchableOpacity onPress={() => {this.props.editAdv(this.props.name, this.props.adv_class, this.props.race, this.props.id, 1)}}>
             <View style={styles.adventurer_container}>
               <View style={styles.flexrow}>
                 <View style={styles.image_left}>
@@ -28,9 +28,9 @@ export default class Adventurer extends React.Component {
                     <Text>{this.props.race}</Text>
                   </View>
                 </View>
-                <View style={styles.image_right}>
+                {/* <View style={styles.image_right}>
                   <Image style={styles.photo} source={require('../assets/character_icons/death.png')}/>
-                </View>
+                </View> */}
               </View>
             </View>
             </TouchableOpacity>

@@ -4,19 +4,22 @@ import {
   View,
   Text,
   ScrollView,
+  AsyncStorage,
 } from 'react-native';
 import Modal from "react-native-modal";
 import ModalSelector from 'react-native-modal-selector';
 import { Item, Label, Input, Button}  from 'native-base';
 import Adventurer from '../components/Adventurer';
 import dnddata from '../constants/dnddata'
+import NPC from '../classes/NPC';
+import strings from '../constants/Strings';
 
-let adventurers = [
-    {name: "Balasar", adv_class: "Paladin", race: "Dragonborn", image: require("../assets/character_icons/male_paladin.png")},
-    {name: "Azrael", adv_class: "Cleric", race: "Aasimar", image: require("../assets/character_icons/male_cleric.png")},
-    {name: "Sly", adv_class: "Rogue", race: "Human", image: require("../assets/character_icons/female_rogue.png")},
-    {name: "Orsik", adv_class: "Barbarian", race: "Dwarf", image: require("../assets/character_icons/male_barbarian.png")}
-];
+// let adventurers = [
+//     {modal_name: "Balasar", modal_adv_class: "Paladin", modal_race: "Dragonborn", image: require("../assets/character_icons/male_paladin.png")},
+//     {modal_name: "Azrael", modal_adv_class: "Cleric", modal_race: "Aasimar", image: require("../assets/character_icons/male_cleric.png")},
+//     {modal_name: "Sly", modal_adv_class: "Rogue", modal_race: "Human", image: require("../assets/character_icons/female_rogue.png")},
+//     {modal_name: "Orsik", modal_adv_class: "Barbarian", modal_race: "Dwarf", image: require("../assets/character_icons/male_barbarian.png")}
+// ];
 
 export default class AdventurersScreen extends React.Component {
   static navigationOptions = {
@@ -27,21 +30,67 @@ export default class AdventurersScreen extends React.Component {
     super(props);
     this.state = {
       modalVisible: false,
-      name: null,
-      adv_class: null,
-      race: null,
+      modal_name: null,
+      modal_adv_class: null,
+      modal_race: null,
+      edit: null,
+      adv_index: null,
+      adventurers: [],
     };
-    openModal = (name, adv_class, race) => {
+    openModal = (modal_name, modal_adv_class, modal_race, id, edit) => {
       this.setState({
-        name: name,
-        adv_class: adv_class,
-        race: race,
+        modal_name: modal_name,
+        modal_adv_class: modal_adv_class,
+        modal_race: modal_race,
+        edit: edit,
+        adv_index: id,
         modalVisible: true
       });
     }
     closeModal = () => {
       this.setState({modalVisible:false});
     }
+
+    load_adventurers = async () => {
+      await AsyncStorage.getItem(strings.keys.adventurers)
+      .then(req => JSON.parse(req))
+      .then(json => json ? this.setState({adventurers: json}) : "")
+      .catch(error => console.log('error!'));
+    }
+
+    add_edit_adventurer = async (modal_name, modal_class, modal_race, index, edit) => {
+      if (modal_name && modal_class && modal_race)
+      {
+        let adventurers = this.state.adventurers;
+
+        if (edit === 0) //add
+        {
+          let npc = new NPC();
+          npc.name = modal_name;
+          npc.type = modal_class;
+          npc.race = modal_race;
+          adventurers.push(npc);
+        }
+        else if (edit === 1) //edit
+        {
+          adventurers[index].name = modal_name;
+          adventurers[index].type = modal_class;
+          adventurers[index].race = modal_race;
+        }
+        await AsyncStorage.setItem(strings.keys.adventurers, JSON.stringify(adventurers))
+        .then(json => console.log('success!'))
+        .catch(error => console.log('error!'));
+
+        this.setState({adventurers: adventurers});
+
+        closeModal();
+      }
+    }
+
+  }
+
+  componentDidMount() {
+    load_adventurers();
   }
 
   render() {
@@ -62,43 +111,49 @@ export default class AdventurersScreen extends React.Component {
             <Input
             name="Name"
             type="text"
-            value={this.state.name}
-            onChangeText={(text) => this.setState({name: text})}
+            value={this.state.modal_name}
+            onChangeText={(text) => this.setState({modal_name: text})}
             />
           </Item>
 
           <ModalSelector
             data={dnddata.classes}
             style={styles.spacer}
-            initValue={this.state.adv_class == null ? "Choose Class" : this.state.adv_class}
-            onChange={(option)=>{ this.setState({adv_class: option.label}) }} />
+            initValue={this.state.modal_adv_class == null ? "Choose Class" : this.state.modal_adv_class}
+            onChange={(option)=>{ this.setState({modal_adv_class: option.label}) }} />
 
           <ModalSelector
             data={dnddata.races}
             style={styles.spacer}
-            initValue={this.state.adv_class == null ? "Choose Race" : this.state.race}
-            onChange={(option)=>{ this.setState({race: option.label}) }} />
+            initValue={this.state.modal_adv_class == null ? "Choose Race" : this.state.modal_race}
+            onChange={(option)=>{ this.setState({modal_race: option.label}) }} />
 
-          <Button success block onPress={() => closeModal()} style={styles.add_button}>
-            <Text style={{color: 'white'}}>Confirm</Text>
-          </Button>
+          <View style={styles.flexrow}>
+                <Button danger block style={styles.btn} onPress={() => closeModal()}>
+                    <Text style={{color:'white'}}>Close</Text>
+                </Button>
+                <Button success block onPress={() => add_edit_adventurer(this.state.modal_name, this.state.modal_adv_class, this.state.modal_race, this.state.adv_index, this.state.edit)} style={styles.btn}>
+                  <Text style={{color: 'white'}}>Confirm</Text>
+                </Button>
+            </View>
         </View>
         </Modal>
 
         {/* Listview of the adventurers */}
         <ScrollView>    
-          {adventurers.map(function(listitem, index){
+          {this.state.adventurers.map(function(listitem, index){
             return(
                 <Adventurer 
                     key={index}
+                    id={index}
                     image={listitem.image}
                     name={listitem.name} 
-                    adv_class={listitem.adv_class}
+                    adv_class={listitem.type}
                     race={listitem.race}
                     editAdv={openModal}
                 />)
           })}
-          <Button light block onPress={() => openModal(null, null, null)} style={styles.add_button}>
+          <Button light block onPress={() => openModal(null, null, null, null, 0)} style={styles.add_button}>
               <Text>Add Adventurer</Text>
           </Button>
         </ScrollView>
@@ -123,8 +178,13 @@ const styles = StyleSheet.create({
   innerContainer: {
     alignItems: 'center',
   },
-  add_button: {
+  btn: {
     borderRadius: 5,
+    flex: 1,
+  },
+  flexrow : {
+    flexDirection: 'row',
+    display: 'flex',
   },
   formInput:{
     borderColor:'#CAECE4',

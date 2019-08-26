@@ -25,16 +25,16 @@ HomeStack.navigationOptions = {
 };
 
 const ManagePartyStack = createStackNavigator({
-  AdventuringPartiesScreen: {screen: AdventuringPartiesScreen },
+  //AdventuringPartiesScreen: {screen: AdventuringPartiesScreen },
   AdventurersScreen: {screen: AdventurersScreen},
 });
 
 ManagePartyStack.navigationOptions = {
-  tabBarLabel: 'Parties',
+  tabBarLabel: 'Adventurers',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-beer' : 'md-beer'}
+      name={Platform.OS === 'ios' ? 'ios-bonfire' : 'md-bonfire'}
     />
   ),
 };
