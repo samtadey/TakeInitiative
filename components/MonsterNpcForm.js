@@ -24,51 +24,51 @@ export default class MonsterNpcForm extends React.Component {
         this.updtLegAct = this.updtLegAct.bind(this);
         this.updtLegRes = this.updtLegRes.bind(this);
 
-        this.loadMonsters = this.loadMonsters.bind(this);
-        this.loadMonsterInfo = this.loadMonsterInfo.bind(this);
+        //this.loadMonsters = this.loadMonsters.bind(this);
+        //this.loadMonsterInfo = this.loadMonsterInfo.bind(this);
     }
 
-    componentDidMount() {
-        this.loadMonsters();
-    }
+    // componentDidMount() {
+    //     this.loadMonsters();
+    // }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.id !== prevProps.id) {
-          this.setState({
-            npc: this.props.npc
-          })
-        }
-    }
+    // componentDidUpdate(prevProps) {
+    //     if (this.props.id !== prevProps.id) {
+    //       this.setState({
+    //         npc: this.props.npc
+    //       })
+    //     }
+    // }
 
-    async loadMonsters() {
-        let response = await monsterApi.getMonsters();
-        response = response.data;
-        let monstersRefined = [];
+    // async loadMonsters() {
+    //     let response = await monsterApi.getMonsters();
+    //     response = response.data;
+    //     let monstersRefined = [];
 
-        for (let i = 0; i < response.count; i++)
-        {
-            monstersRefined.push({key: i, label: response.results[i].name, url: response.results[i].url});
-        }
-        this.setState({monsters: monstersRefined});
-    }
+    //     for (let i = 0; i < response.count; i++)
+    //     {
+    //         monstersRefined.push({key: i, label: response.results[i].name, url: response.results[i].url});
+    //     }
+    //     this.setState({monsters: monstersRefined});
+    // }
 
-    async loadMonsterInfo(url) {
-        let response = await monsterApi.getMonsterInfo(url);
-        response = response.data;
-        //alert(JSON.stringify(response));
+    // async loadMonsterInfo(url) {
+    //     let response = await monsterApi.getMonsterInfo(url);
+    //     response = response.data;
+    //     //alert(JSON.stringify(response));
 
-        this.updtName(response.name);
-        this.updtType(response.type);
-        this.updtHealth(response.hit_points.toString());
+    //     this.updtName(response.name);
+    //     this.updtType(response.type);
+    //     this.updtHealth(response.hit_points.toString());
 
-        // //TODO
-        // if (response.legendary_actions.length > 0)
-        // {
-        //     this.updtIsLeg();
-        //     this.updtLegAct("3");
-        //     this.updtLegRes("3");
-        // }
-    }
+    //     // //TODO
+    //     // if (response.legendary_actions.length > 0)
+    //     // {
+    //     //     this.updtIsLeg();
+    //     //     this.updtLegAct("3");
+    //     //     this.updtLegRes("3");
+    //     // }
+    // }
 
     // need to write function for number input
     // ensureDigits(number) {
@@ -140,12 +140,12 @@ export default class MonsterNpcForm extends React.Component {
                 {this.props.single != 1 ?
                 <View style={styles.closeIconRow}>
                      
-                    <ModalSelector
+                    {/* <ModalSelector
                     data={this.state.monsters}
                     style={styles.modalselector}
                     initValue={strings.create_encounter_form.monsterFormName}
                     // onChange={(option)=>{ this.updtName(option.label) }} />
-                    onChange={(option)=>{ this.loadMonsterInfo(option.url) }} />
+                    onChange={(option)=>{ this.loadMonsterInfo(option.url) }} /> */}
 
                     <TouchableOpacity onPress={this.deleteFormItem} style={styles.closeIcon}>
                         <Icon name={Platform.OS === 'ios' ? 'ios-close-circle-outline' : 'md-close-circle-outline'} style={{marginRight: 10}}/>

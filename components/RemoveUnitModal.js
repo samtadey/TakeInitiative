@@ -21,7 +21,8 @@ export default class RemoveUnitModal extends React.Component {
 
     RUMopenModal = () => {
         this.setState({
-          RUMmodalvisible: true
+          RUMmodalvisible: true,
+          avail_remove_list: initInitiativeList(this.props.list),
         });
       }
 
@@ -37,8 +38,10 @@ export default class RemoveUnitModal extends React.Component {
             {
                 prepared_list.push({key: i, label: list[i].name});
             }
-            this.setState({avail_remove_list: prepared_list});
+            return prepared_list;
+            //this.setState({avail_remove_list: prepared_list});
         }
+        return [];
     }
   }
 
@@ -48,8 +51,9 @@ export default class RemoveUnitModal extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.list !== prevProps.list)
-            this.setState({avail_remove_list: this.props.list});
+            this.setState({avail_remove_list: initInitiativeList(this.props.list)});
     }
+
 
   render() {
     return (

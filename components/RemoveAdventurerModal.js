@@ -16,28 +16,44 @@ export default class RemoveAdventurerModal extends React.Component {
     super(props);
     this.state = {
       RAMmodalvisible: false,
+      adv_list: [],
       avail_remove_list: [],
+      to_remove: null,
     };
 
     RAMopenModal = () => {
         this.setState({
-          RAMmodalvisible: true
+          RAMmodalvisible: true,
+          avail_remove_list: prepRemoveList(this.props.adventurers) //not updating when new props passed, this is soln
         });
       }
 
     RAMcloseModal = () => {
         this.setState({RAMmodalvisible:false});
     }
-  }
 
-    // componentDidMount() {
-    //     initInitiativeList(this.props.list);
-    // }
+    prepRemoveList = (list) => {
+        //alert(JSON.stringify(list));
+        let prepped_list = [];
+        for (let i = 0; i < list.length; i++)
+            prepped_list.push({key: i, label: list[i].name});
+        
+        return prepped_list;
+    }
 
-    // componentDidUpdate(prevProps) {
-    //     if (this.props.list !== prevProps.list)
-    //         this.setState({avail_remove_list: this.props.list});
-    // }
+    completeRemoveAdventurer = (name, list) => {
+        this.props.removeAdventurer(name, list);
+        RAMcloseModal();
+    }
+}
+
+    //passing props to modals
+    //looks like the modal renders when the screen first renders, and then re-renders whenever you open it
+    componentDidUpdate(prevProps) {
+        //alert(JSON.stringify(this.props.adventurers));
+        if (this.props.adventurers !== prevProps.adventurers)
+            this.setState({avail_remove_list: prepRemoveList(this.props.adventurers)});
+    }
 
   render() {
     return (
@@ -55,15 +71,15 @@ export default class RemoveAdventurerModal extends React.Component {
             data={this.state.avail_remove_list}
             style={styles.spacer}
             initValue="Choose to Remove"
-            //onChange={(option)=>{ this.setState({adv_class: option.label}) }} 
+            onChange={(option)=>{ this.setState({to_remove: option.label}) }} 
             />
 
             <View style={styles.flexrow}>
                 <Button danger block style={styles.btn} onPress={() => RAMcloseModal()}>
-                    <Text style={{color:'white'}}>Close</Text>
+                    <Text style={{color:'white'}}>{strings.common_verbs.close}</Text>
                 </Button>
-                <Button success block style={styles.btn}>
-                    <Text style={{color:'white'}}>Confirm</Text>
+                <Button success block style={styles.btn} onPress={() => completeRemoveAdventurer(this.state.to_remove, this.props.adventurers)}>
+                    <Text style={{color:'white'}}>{strings.common_verbs.confirm}</Text>
                 </Button>
             </View>
 

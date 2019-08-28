@@ -11,16 +11,11 @@ import ModalSelector from 'react-native-modal-selector';
 import { Item, Label, Input, Button}  from 'native-base';
 import Adventurer from '../components/Adventurer';
 import dnddata from '../constants/dnddata'
+//import image from require('../assets/character_icons/male_barbarian.png')
 import NPC from '../classes/NPC';
 import strings from '../constants/Strings';
 import RemoveAdventurerModal from '../components/RemoveAdventurerModal';
 
-// let adventurers = [
-//     {modal_name: "Balasar", modal_adv_class: "Paladin", modal_race: "Dragonborn", image: require("../assets/character_icons/male_paladin.png")},
-//     {modal_name: "Azrael", modal_adv_class: "Cleric", modal_race: "Aasimar", image: require("../assets/character_icons/male_cleric.png")},
-//     {modal_name: "Sly", modal_adv_class: "Rogue", modal_race: "Human", image: require("../assets/character_icons/female_rogue.png")},
-//     {modal_name: "Orsik", modal_adv_class: "Barbarian", modal_race: "Dwarf", image: require("../assets/character_icons/male_barbarian.png")}
-// ];
 
 export default class AdventurersScreen extends React.Component {
   static navigationOptions = {
@@ -36,7 +31,7 @@ export default class AdventurersScreen extends React.Component {
       modal_race: null,
       edit: null,
       adv_index: null,
-      adventurers: [],
+      adventurers_list: [],
     };
     openModal = (modal_name, modal_adv_class, modal_race, id, edit) => {
       this.setState({
@@ -55,14 +50,14 @@ export default class AdventurersScreen extends React.Component {
     load_adventurers = async () => {
       await AsyncStorage.getItem(strings.keys.adventurers)
       .then(req => JSON.parse(req))
-      .then(json => json ? this.setState({adventurers: json}) : "")
+      .then(json => json ? this.setState({adventurers_list: json}) : "")
       .catch(error => console.log('error!'));
     }
 
     add_edit_adventurer = async (modal_name, modal_class, modal_race, index, edit) => {
       if (modal_name && modal_class && modal_race)
       {
-        let adventurers = this.state.adventurers;
+        let adventurers = this.state.adventurers_list;
 
         if (edit === 0) //add
         {
@@ -82,11 +77,37 @@ export default class AdventurersScreen extends React.Component {
         .then(json => console.log('success!'))
         .catch(error => console.log('error!'));
 
-        this.setState({adventurers: adventurers});
+        this.setState({adventurers_list: adventurers});
 
         closeModal();
       }
     }
+
+    removeAdventurer = async (adventurerName, adventurer_list) => {
+      //alert(adventurerName);
+      if (adventurerName && adventurer_list)
+      {
+          let list = adventurer_list;
+          for (let i = 0; i < list.length; i++)
+          {
+              if (list[i].name === adventurerName)
+              {
+                  list.splice(i,1);
+                  break;
+              }
+          }
+
+          await AsyncStorage.setItem(strings.keys.adventurers, JSON.stringify(list))
+          .then(json => console.log('success!'))
+          .catch(error => console.log('error!'));
+
+          this.setState({adventurers_list: list});
+      }
+      else 
+      {
+          alert("Choose an Adventurer to Remove");
+      }
+  }
 
   }
 
@@ -141,13 +162,13 @@ export default class AdventurersScreen extends React.Component {
         </Modal>
 
         {/* Listview of the adventurers */}
-        <ScrollView>    
-          {this.state.adventurers.map(function(listitem, index){
+        <ScrollView style={styles.scroll}>    
+          {this.state.adventurers_list.map(function(listitem, index){
             return(
                 <Adventurer 
                     key={index}
                     id={index}
-                    image={listitem.image}
+                    //image={require('../assets/character_icons/male_barbarian.png')}
                     name={listitem.name} 
                     adv_class={listitem.type}
                     race={listitem.race}
@@ -157,12 +178,13 @@ export default class AdventurersScreen extends React.Component {
           <Button light block onPress={() => openModal(null, null, null, null, 0)} style={styles.btn}>
               <Text>{strings.create_encounter_form.addAdventurer}</Text>
           </Button>
+
+          <View style={styles.removebtn}>
+            <RemoveAdventurerModal removeAdventurer={removeAdventurer} adventurers={this.state.adventurers_list}/>
+          </View>
         </ScrollView>
 
-        <View style={styles.bottom}>
-          <RemoveAdventurerModal/>
-        </View>
-        
+
       </View>
     );
   }
@@ -182,7 +204,17 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     justifyContent: 'flex-end',
-    padding: 10
+    padding: 10,
+    //backgroundColor: 'green',
+  },
+  removebtn: {
+    borderRadius: 5,
+    flex: 1,
+    marginTop: 20
+  },
+  scroll : {
+    flex: 1,
+    //backgroundColor: 'red',
   },
   modal_container: {
     backgroundColor: '#FFFFFF',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Platform, AsyncStorage} from 'react-native';
 import { Item, Label, Input, Icon } from 'native-base';
 import strings from '../constants/Strings';
 import CheckBox from 'react-native-check-box'; 
@@ -15,12 +15,29 @@ export default class MonsterNpcForm extends React.Component {
             npc: new NPC(),
             adventurers: [],
         };
+
+        getAdventurers = async () => {
+            let adv = JSON.parse(await AsyncStorage.getItem(strings.keys.adventurers));
+            let preppedAdv = [];
+
+            for (let i = 0; i < adv.length; i++)
+                preppedAdv.push({key: i, label: adv[i].name});
+
+            //return preppedAdv;
+            this.setState({adventurers: preppedAdv});
+        }
+
         this.deleteFormItem = this.deleteFormItem.bind(this);
 
         this.updtName = this.updtName.bind(this);
         this.updtType = this.updtType.bind(this);
         this.updtInitiative = this.updtInitiative.bind(this);
     }
+
+    componentDidMount() {
+        getAdventurers();
+    }
+
 
     componentDidUpdate(prevProps) {
         if (this.props.id !== prevProps.id) {

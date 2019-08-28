@@ -1,5 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, } from 'react-native';
+import { 
+    View, 
+    Text, 
+    StyleSheet,
+    AsyncStorage, } from 'react-native';
 import { Button } from 'native-base';
 import strings from '../constants/Strings';
 import Modal from "react-native-modal";
@@ -17,15 +21,26 @@ export default class CreateEncounterModal extends React.Component {
           CEMmodalVisible: false,
           npcs: [new NPC()],
           adventurers: [new NPC()],
+          choose_adventurers: [new NPC()],
         };
 
         CEMopenModal = () => {
           this.setState({
-            CEMmodalVisible: true
+            CEMmodalVisible: true,
+            choose_adventurers: getAdventurers(),
           });
         }
         CEMcloseModal = () => {
           this.setState({CEMmodalVisible:false});
+        }
+        getAdventurers = async () => {
+            let adv = JSON.parse(await AsyncStorage.getItem(strings.keys.adventurers));
+            let preppedAdv = [];
+
+            for (let i = 0; i < adv.length; i++)
+                preppedAdv.push({key: i, label: adv[i].name});
+
+            return preppedAdv;
         }
         extendFormMon = () => {
             let formM = this.state.npcs;
@@ -61,10 +76,6 @@ export default class CreateEncounterModal extends React.Component {
             let allItems = this.state.npcs.concat(this.state.adventurers);
 
             allItems.sort(compare);
-            // let st = '';
-            // for (let i = 0; i < allItems.length; i++)
-            //     st += allItems[i].name + " " + allItems[i].initiative + "\n";
-            // alert(st);
 
             this.props.generate_list(allItems);
             this.setState({npcs: [new NPC()], adventurers: [new NPC()]});
