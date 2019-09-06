@@ -5,16 +5,62 @@ import {
   Text,
   ScrollView,
   AsyncStorage,
+  Image,
 } from 'react-native';
 import Modal from "react-native-modal";
 import ModalSelector from 'react-native-modal-selector';
 import { Item, Label, Input, Button}  from 'native-base';
 import Adventurer from '../components/Adventurer';
 import dnddata from '../constants/dnddata'
-//import image from require('../assets/character_icons/male_barbarian.png')
 import NPC from '../classes/NPC';
 import strings from '../constants/Strings';
 import RemoveAdventurerModal from '../components/RemoveAdventurerModal';
+import ChoosePictureModal from '../components/ChoosePictureModal';
+
+let poss_images = [
+  {images : [
+      {id: 0, src: require('../assets/character_icons/male_wizard.png')},
+      {id: 1, src: require('../assets/character_icons/female_wizard.png')},
+      {id: 2, src: require('../assets/character_icons/male_druid.png')},
+      {id: 3, src: require('../assets/character_icons/female_druid.png')},
+  ]
+  },
+  {images : [
+      {id: 4, src:  require('../assets/character_icons/male_sorcerer.png')},
+      {id: 5, src:  require('../assets/character_icons/female_sorcerer.png')},
+      {id: 6, src:  require('../assets/character_icons/male_warlock.png')},
+      {id: 7, src:  require('../assets/character_icons/female_warlock.png')},
+  ]
+  },
+  {images : [
+        {id: 7, src:  require('../assets/character_icons/male_ranger.png')},
+        {id: 8, src:  require('../assets/character_icons/female_ranger.png')},
+        {id: 9, src:  require('../assets/character_icons/male_rogue.png')},
+        {id: 10, src:  require('../assets/character_icons/female_rogue.png')},
+    ]
+  },
+  {images : [
+        {id: 11, src:  require('../assets/character_icons/male_monk.png')},
+        {id: 12, src:  require('../assets/character_icons/female_monk.png')},
+        {id: 13, src:  require('../assets/character_icons/male_bard.png')},
+        {id: 14, src:  require('../assets/character_icons/female_bard.png')},
+    ]
+  },
+  {images : [
+        {id: 15, src:  require('../assets/character_icons/male_barbarian.png')},
+        {id: 16, src:  require('../assets/character_icons/female_barbarian.png')},
+        {id: 17, src:  require('../assets/character_icons/male_paladin.png')},
+        {id: 18, src:  require('../assets/character_icons/female_paladin.png')},
+    ]
+  },
+  {images : [
+        {id: 19, src:  require('../assets/character_icons/male_fighter.png')},
+        {id: 20, src:  require('../assets/character_icons/female_fighter.png')},
+        {id: 21, src:  require('../assets/character_icons/male_cleric.png')},
+        {id: 22, src:  require('../assets/character_icons/female_cleric.png')},
+    ]
+  },
+]
 
 
 export default class AdventurersScreen extends React.Component {
@@ -29,17 +75,20 @@ export default class AdventurersScreen extends React.Component {
       modal_name: null,
       modal_adv_class: null,
       modal_race: null,
+      img: '',
       edit: null,
       adv_index: null,
       adventurers_list: [],
+      img: null,
     };
-    openModal = (modal_name, modal_adv_class, modal_race, id, edit) => {
+    openModal = (modal_name, modal_adv_class, modal_race, img, id, edit) => {
       this.setState({
         modal_name: modal_name,
         modal_adv_class: modal_adv_class,
         modal_race: modal_race,
         edit: edit,
         adv_index: id,
+        img: img,
         modalVisible: true
       });
     }
@@ -54,7 +103,13 @@ export default class AdventurersScreen extends React.Component {
       .catch(error => console.log('error!'));
     }
 
-    add_edit_adventurer = async (modal_name, modal_class, modal_race, index, edit) => {
+    get_image = (row, cell) => {
+      this.setState({img_row: row, image_cell: cell});
+    }
+
+
+    add_edit_adventurer = async (modal_name, modal_class, modal_race, img_row, img_cell, index, edit) => {
+      //alert(img);
       if (modal_name && modal_class && modal_race)
       {
         let adventurers = this.state.adventurers_list;
@@ -65,6 +120,8 @@ export default class AdventurersScreen extends React.Component {
           npc.name = modal_name;
           npc.type = modal_class;
           npc.race = modal_race;
+          npc.img_loc.row = img_row;
+          npc.img_loc.row = img_cell;
           adventurers.push(npc);
         }
         else if (edit === 1) //edit
@@ -72,6 +129,7 @@ export default class AdventurersScreen extends React.Component {
           adventurers[index].name = modal_name;
           adventurers[index].type = modal_class;
           adventurers[index].race = modal_race;
+          adventurers[index].img_url = img;
         }
         await AsyncStorage.setItem(strings.keys.adventurers, JSON.stringify(adventurers))
         .then(json => console.log('success!'))
@@ -113,6 +171,15 @@ export default class AdventurersScreen extends React.Component {
 
   componentDidMount() {
     load_adventurers();
+
+    var myMap = new Map();
+    // setting the values
+    myMap.set("male_wizard", require('../assets/character_icons/male_wizard.png'));
+    myMap.set("female_wizard", require('../assets/character_icons/female_wizard.png'));
+    myMap.set("male_druid", require('../assets/character_icons/male_druid.png'));
+    myMap.set("female_druid", require('../assets/character_icons/female_druid.png'));
+
+    this.setState({img: myMap});
   }
 
   render() {
@@ -122,7 +189,7 @@ export default class AdventurersScreen extends React.Component {
         <Modal
               visible={this.state.modalVisible}
               animationType={'slide'}
-              onBackdropPress={() => closeModal()}
+              //onBackdropPress={() => closeModal()}
         >
         <View style={styles.modal_container}>
 
@@ -150,14 +217,19 @@ export default class AdventurersScreen extends React.Component {
             initValue={this.state.modal_adv_class == null ? "Choose Race" : this.state.modal_race}
             onChange={(option)=>{ this.setState({modal_race: option.label}) }} />
 
-            <View style={styles.flexrow}>
-                <Button danger block style={styles.btn} onPress={() => closeModal()}>
-                    <Text style={{color:'white'}}>Close</Text>
-                </Button>
-                <Button success block onPress={() => add_edit_adventurer(this.state.modal_name, this.state.modal_adv_class, this.state.modal_race, this.state.adv_index, this.state.edit)} style={styles.btn}>
-                  <Text style={{color: 'white'}}>Confirm</Text>
-                </Button>
-            </View>
+          <ChoosePictureModal get_image={get_image}/>
+
+          {this.state.img_row && this.state.img_cell ? <Image style={styles.photo} source={poss_images[row].images[cell].src}/> : <View/>}
+
+          <View style={styles.flexrow}>
+              <Button danger block style={styles.btn} onPress={() => closeModal()}>
+                  <Text style={{color:'white'}}>Close</Text>
+              </Button>
+              <Button success block onPress={() => add_edit_adventurer(this.state.modal_name, this.state.modal_adv_class, this.state.modal_race, this.state.img_row, this.state.img_cell, this.state.adv_index, this.state.edit)} style={styles.btn}>
+                <Text style={{color: 'white'}}>Confirm</Text>
+              </Button>
+          </View>
+
         </View>
         </Modal>
 
@@ -168,14 +240,14 @@ export default class AdventurersScreen extends React.Component {
                 <Adventurer 
                     key={index}
                     id={index}
-                    //image={require('../assets/character_icons/male_barbarian.png')}
+                    //image={poss_images[listitem.img_loc.row].images[listitem.img_loc.cell]}
                     name={listitem.name} 
                     adv_class={listitem.type}
                     race={listitem.race}
                     editAdv={openModal}
                 />)
           })}
-          <Button light block onPress={() => openModal(null, null, null, null, 0)} style={styles.btn}>
+          <Button light block onPress={() => openModal(null, null, null, null, null, null, 0)} style={styles.btn}>
               <Text>{strings.create_encounter_form.addAdventurer}</Text>
           </Button>
 
@@ -192,8 +264,9 @@ export default class AdventurersScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     padding: 10,
+    //backgroundColor: 'red',
   },
   text: {
     color: 'white'
@@ -213,12 +286,19 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   scroll : {
-    flex: 1,
+    //flex: 1,
     //backgroundColor: 'red',
   },
+  photo: {
+    height: 75,
+    width: 75,
+    //backgroundColor: '#F0F0F0',
+},
   modal_container: {
+    //flex: 1,
     backgroundColor: '#FFFFFF',
-    //height: ,
+    //backgroundColor: 'red',
+    height: 350,
     padding: 10,
     borderRadius: 5,
     borderColor: 'black',

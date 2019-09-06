@@ -3,6 +3,7 @@ export default {
   common_verbs: {
     close: 'Close',
     confirm: 'Confirm',
+    choose_image: 'Choose Image',
   },
 
   common_titles : {
