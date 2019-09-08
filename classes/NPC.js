@@ -8,7 +8,7 @@ export default class NPC {
         this.legendary = false;
         this.leg_actions = '';
         this.leg_resist = '';
-        this.img_loc = {row: '', cell: ''};
+        this.img_key = '';
     }
 
     setName = function (name) {

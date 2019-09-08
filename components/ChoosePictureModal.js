@@ -19,44 +19,44 @@ import { ScrollView } from 'react-native-gesture-handler';
 let images = [
   {images : [
       {id: 0, src: require('../assets/character_icons/male_wizard.png'), key: "male_wizard"},
-      {id: 1, src: require('../assets/character_icons/female_wizard.png')},
-      {id: 2, src: require('../assets/character_icons/male_druid.png')},
-      {id: 3, src: require('../assets/character_icons/female_druid.png')},
+      {id: 1, src: require('../assets/character_icons/female_wizard.png'), key: "female_wizard"},
+      {id: 2, src: require('../assets/character_icons/male_druid.png'), key: "male_druid"},
+      {id: 3, src: require('../assets/character_icons/female_druid.png'), key: "female_druid"},
   ]
   },
   {images : [
-      {id: 4, src:  require('../assets/character_icons/male_sorcerer.png')},
-      {id: 5, src:  require('../assets/character_icons/female_sorcerer.png')},
-      {id: 6, src:  require('../assets/character_icons/male_warlock.png')},
-      {id: 7, src:  require('../assets/character_icons/female_warlock.png')},
+      {id: 4, src:  require('../assets/character_icons/male_sorcerer.png'), key: "male_sorcerer"},
+      {id: 5, src:  require('../assets/character_icons/female_sorcerer.png'), key: "female_sorcerer"},
+      {id: 6, src:  require('../assets/character_icons/male_warlock.png'), key: "male_warlock"},
+      {id: 7, src:  require('../assets/character_icons/female_warlock.png'), key: "female_warlock"},
   ]
   },
   {images : [
-        {id: 7, src:  require('../assets/character_icons/male_ranger.png')},
-        {id: 8, src:  require('../assets/character_icons/female_ranger.png')},
-        {id: 9, src:  require('../assets/character_icons/male_rogue.png')},
-        {id: 10, src:  require('../assets/character_icons/female_rogue.png')},
+        {id: 7, src:  require('../assets/character_icons/male_ranger.png'), key: "male_ranger"},
+        {id: 8, src:  require('../assets/character_icons/female_ranger.png'), key: "female_ranger"},
+        {id: 9, src:  require('../assets/character_icons/male_rogue.png'), key: "male_rogue"},
+        {id: 10, src:  require('../assets/character_icons/female_rogue.png'), key: "female_rogue"},
     ]
   },
   {images : [
-        {id: 11, src:  require('../assets/character_icons/male_monk.png')},
-        {id: 12, src:  require('../assets/character_icons/female_monk.png')},
-        {id: 13, src:  require('../assets/character_icons/male_bard.png')},
-        {id: 14, src:  require('../assets/character_icons/female_bard.png')},
+        {id: 11, src:  require('../assets/character_icons/male_monk.png'), key: "male_monk"},
+        {id: 12, src:  require('../assets/character_icons/female_monk.png'), key: "female_monk"},
+        {id: 13, src:  require('../assets/character_icons/male_bard.png'), key: "male_bard"},
+        {id: 14, src:  require('../assets/character_icons/female_bard.png'), key: "female_bard"},
     ]
   },
   {images : [
-        {id: 15, src:  require('../assets/character_icons/male_barbarian.png')},
-        {id: 16, src:  require('../assets/character_icons/female_barbarian.png')},
-        {id: 17, src:  require('../assets/character_icons/male_paladin.png')},
-        {id: 18, src:  require('../assets/character_icons/female_paladin.png')},
+        {id: 15, src:  require('../assets/character_icons/male_barbarian.png'), key: "male_barbarian"},
+        {id: 16, src:  require('../assets/character_icons/female_barbarian.png'), key: "female_barbarian"},
+        {id: 17, src:  require('../assets/character_icons/male_paladin.png'), key: "male_paladin"},
+        {id: 18, src:  require('../assets/character_icons/female_paladin.png'), key: "female_paladin"},
     ]
   },
   {images : [
-        {id: 19, src:  require('../assets/character_icons/male_fighter.png')},
-        {id: 20, src:  require('../assets/character_icons/female_fighter.png')},
-        {id: 21, src:  require('../assets/character_icons/male_cleric.png')},
-        {id: 22, src:  require('../assets/character_icons/female_cleric.png')},
+        {id: 19, src:  require('../assets/character_icons/male_fighter.png'), key: "male_fighter"},
+        {id: 20, src:  require('../assets/character_icons/female_fighter.png'), key: "female_fighter"},
+        {id: 21, src:  require('../assets/character_icons/male_cleric.png'), key: "male_cleric"},
+        {id: 22, src:  require('../assets/character_icons/female_cleric.png'), key: "female_cleric"},
     ]
   },
 ]
@@ -133,8 +133,8 @@ export default class ChoosePictureModal extends React.Component {
         this.setState({CPMmodalvisible:false});
     }
 
-    choose_image = (img) => {
-      this.props.get_image(img);
+    choose_image = (key) => {
+      this.props.get_image(key);
       CPMcloseModal();
     }
  }
@@ -159,7 +159,7 @@ export default class ChoosePictureModal extends React.Component {
                 <View key={index} style={styles.flexrow}>
                     {images[index].images.map((listitem, index) => {
                         return (
-                            <TouchableOpacity key={index} onPress={() => choose_image(row, index)} style={listitem.id === this.state.selected ? styles.sel : ''}>
+                            <TouchableOpacity key={index} onPress={() => choose_image(listitem.key)} style={listitem.id === this.state.selected ? styles.sel : ''}>
                                 <Image key={index} style={styles.photo} source={listitem.src}/>
                             </TouchableOpacity> 
                     )})
