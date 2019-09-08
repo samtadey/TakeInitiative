@@ -23,6 +23,10 @@ export default class InitiativeItem extends React.Component {
                     <Text style={styles.classifier}>Type: </Text>
                     <Text>{this.props.adv_class}</Text>
                   </View>
+                  <View style={styles.flexrow}>
+                    <Text style={styles.classifier}>Race: </Text>
+                    <Text>{this.props.race}</Text>
+                  </View>
                 </View>
                 <View style={styles.image_right}>
                     <Text style={styles.initiativeSize}>{this.props.initiative}</Text>

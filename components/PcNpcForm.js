@@ -21,7 +21,8 @@ export default class MonsterNpcForm extends React.Component {
             let preppedAdv = [];
 
             for (let i = 0; i < adv.length; i++)
-                preppedAdv.push({key: i, label: adv[i].name});
+                preppedAdv.push({key: i, label: adv[i].name, type: adv[i].type, race: adv[i].race, img_key: adv[i].img_key});
+            //need the key/label relationship
 
             //return preppedAdv;
             this.setState({adventurers: preppedAdv});
@@ -29,8 +30,11 @@ export default class MonsterNpcForm extends React.Component {
 
         this.deleteFormItem = this.deleteFormItem.bind(this);
 
+        this.updtAll = this.updtAll.bind(this);
         this.updtName = this.updtName.bind(this);
         this.updtType = this.updtType.bind(this);
+        this.updtRace = this.updtRace.bind(this);
+        this.updtImg = this.updtImg.bind(this);
         this.updtInitiative = this.updtInitiative.bind(this);
     }
 
@@ -51,6 +55,13 @@ export default class MonsterNpcForm extends React.Component {
         this.props.deleteItem(this.props.id);
     }
 
+    updtAll(name, type, race, img) {
+        this.updtName(name);
+        this.updtType(type);
+        this.updtRace(race);
+        this.updtImg(img);
+    }
+
     async updtName(text) {
         let npc = this.state.npc;
         npc.name = text;
@@ -61,6 +72,20 @@ export default class MonsterNpcForm extends React.Component {
     updtType(text) {
         let npc = this.state.npc;
         npc.type = text;
+        this.setState({npc: npc});
+        this.props.updateForm(this.props.id, npc);
+    }
+
+    updtRace(text) {
+        let npc = this.state.npc;
+        npc.race = text;
+        this.setState({npc: npc});
+        this.props.updateForm(this.props.id, npc);
+    }
+
+    updtImg(text) {
+        let npc = this.state.npc;
+        npc.img_key = text;
         this.setState({npc: npc});
         this.props.updateForm(this.props.id, npc);
     }
@@ -82,7 +107,7 @@ export default class MonsterNpcForm extends React.Component {
                         style={styles.modalselector}
                         initValue={strings.create_encounter_form.adventurerFormName}
                         // onChange={(option)=>{ this.updtName(option.label) }} />
-                        onChange={(option)=>{ this.updtName(option.label) }} />
+                        onChange={(option)=>{ this.updtAll(option.label, option.type, option.race, option.img_key) }} />
 
                     <TouchableOpacity onPress={this.deleteFormItem} style={styles.closeIcon}>
                         <Icon name={Platform.OS === 'ios' ? 'ios-close-circle-outline' : 'md-close-circle-outline'} style={{marginRight: 10}}/>

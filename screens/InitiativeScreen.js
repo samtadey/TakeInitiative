@@ -14,6 +14,38 @@ import strings from '../constants//Strings';
 import InitiativeActionsDrawer from '../components/InitiativeActionsDrawer';
 import InitiativeItem from '../components/InitiativeItem';
 
+var myMap = new Map();
+// setting the values
+myMap.set("male_wizard", require('../assets/character_icons/male_wizard.png'));
+myMap.set("female_wizard", require('../assets/character_icons/female_wizard.png'));
+myMap.set("male_druid", require('../assets/character_icons/male_druid.png'));
+myMap.set("female_druid", require('../assets/character_icons/female_druid.png'));
+
+myMap.set("male_sorcerer", require('../assets/character_icons/male_sorcerer.png'));
+myMap.set("female_sorcerer", require('../assets/character_icons/female_sorcerer.png'));
+myMap.set("male_warlock", require('../assets/character_icons/male_warlock.png'));
+myMap.set("female_warlock", require('../assets/character_icons/female_warlock.png'));
+
+myMap.set("male_ranger", require('../assets/character_icons/male_ranger.png'));
+myMap.set("female_ranger", require('../assets/character_icons/female_ranger.png'));
+myMap.set("male_rogue", require('../assets/character_icons/male_rogue.png'));
+myMap.set("female_rogue", require('../assets/character_icons/female_rogue.png'));
+
+myMap.set("male_monk", require('../assets/character_icons/male_monk.png'));
+myMap.set("female_monk", require('../assets/character_icons/female_monk.png'));
+myMap.set("male_bard", require('../assets/character_icons/male_bard.png'));
+myMap.set("female_bard", require('../assets/character_icons/female_bard.png'));
+
+myMap.set("male_barbarian", require('../assets/character_icons/male_barbarian.png'));
+myMap.set("female_barbarian", require('../assets/character_icons/female_barbarian.png'));
+myMap.set("male_paladin", require('../assets/character_icons/male_paladin.png'));
+myMap.set("female_paladin", require('../assets/character_icons/female_paladin.png'));
+
+myMap.set("male_fighter", require('../assets/character_icons/male_fighter.png'));
+myMap.set("female_fighter", require('../assets/character_icons/female_fighter.png'));
+myMap.set("male_cleric", require('../assets/character_icons/male_cleric.png'));
+myMap.set("female_cleric", require('../assets/character_icons/female_cleric.png'));
+
 export default class InitiativeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: "Initiative Order",
@@ -162,6 +194,8 @@ export default class InitiativeScreen extends React.Component {
                     key={index}
                     name={listitem.name} 
                     adv_class={listitem.type}
+                    race={listitem.race}
+                    image={myMap.get(listitem.img_key)}
                     initiative={listitem.initiative}
                 />)
               })}
