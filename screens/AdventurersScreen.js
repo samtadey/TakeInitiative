@@ -108,9 +108,11 @@ export default class AdventurersScreen extends React.Component {
       modal_adv_class: null,
       modal_race: null,
       img: '',
+      img_key: '',
       edit: null,
       adv_index: null,
       adventurers_list: [],
+      validation_msg: '',
     };
     openModal = (modal_name, modal_adv_class, modal_race, img, id, edit) => {
       this.setState({
@@ -120,6 +122,7 @@ export default class AdventurersScreen extends React.Component {
         edit: edit,
         adv_index: id,
         img_key: img,
+        validation_msg: '',
         modalVisible: true
       });
     }
@@ -141,7 +144,7 @@ export default class AdventurersScreen extends React.Component {
 
     add_edit_adventurer = async (modal_name, modal_class, modal_race, img, index, edit) => {
       //alert(img);
-      if (modal_name && modal_class && modal_race)
+      if (modal_name)
       {
         let adventurers = this.state.adventurers_list;
 
@@ -168,6 +171,10 @@ export default class AdventurersScreen extends React.Component {
         this.setState({adventurers_list: adventurers});
 
         closeModal();
+      }
+      else
+      {
+        this.setState({validation_msg: strings.validation_msg.name});
       }
     }
 
@@ -201,15 +208,6 @@ export default class AdventurersScreen extends React.Component {
 
   componentDidMount() {
     load_adventurers();
-
-    // var myMap = new Map();
-    // // setting the values
-    // myMap.set("male_wizard", require('../assets/character_icons/male_wizard.png'));
-    // myMap.set("female_wizard", require('../assets/character_icons/female_wizard.png'));
-    // myMap.set("male_druid", require('../assets/character_icons/male_druid.png'));
-    // myMap.set("female_druid", require('../assets/character_icons/female_druid.png'));
-
-    // this.setState({img_list: myMap});
   }
 
   render() {
@@ -249,7 +247,13 @@ export default class AdventurersScreen extends React.Component {
 
           <ChoosePictureModal get_image={get_image}/>
 
-          {/* {this.state.img_row && this.state.img_cell ? <Image style={styles.photo} source={poss_images[row].images[cell].src}/> : <View/>} */}
+          <View style={styles.valid_container}>
+            <Text style={styles.validation_msg}>{this.state.validation_msg}</Text>
+          </View>
+
+          <View style={styles.sel_img}>
+            {this.state.img_key ? <Image style={styles.photo} source={myMap.get(this.state.img_key)}/> : <View style={styles.photo}/>}
+          </View>
 
           <View style={styles.flexrow}>
               <Button danger block style={styles.btn} onPress={() => closeModal()}>
@@ -264,13 +268,14 @@ export default class AdventurersScreen extends React.Component {
         </Modal>
 
         {/* Listview of the adventurers */}
-        <ScrollView style={styles.scroll}>    
+        <ScrollView>    
           {this.state.adventurers_list.map(function(listitem, index){
             return(
                 <Adventurer 
                     key={index}
                     id={index}
                     image={myMap.get(listitem.img_key)}
+                    img_key={listitem.img_key}
                     name={listitem.name} 
                     adv_class={listitem.type}
                     race={listitem.race}
@@ -294,12 +299,16 @@ export default class AdventurersScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
     padding: 10,
-    //backgroundColor: 'red',
   },
   text: {
     color: 'white'
+  },
+  validation_msg: {
+    color: 'red'
+  },
+  valid_container: {
+    height: 20,
   },
   bottom: {
     position: 'absolute',
@@ -308,27 +317,19 @@ const styles = StyleSheet.create({
     left: 0,
     justifyContent: 'flex-end',
     padding: 10,
-    //backgroundColor: 'green',
   },
   removebtn: {
     borderRadius: 5,
     flex: 1,
     marginTop: 20
   },
-  scroll : {
-    //flex: 1,
-    //backgroundColor: 'red',
-  },
   photo: {
     height: 75,
     width: 75,
-    //backgroundColor: '#F0F0F0',
 },
   modal_container: {
-    //flex: 1,
     backgroundColor: '#FFFFFF',
-    //backgroundColor: 'red',
-    height: 350,
+    height: 415,
     padding: 10,
     borderRadius: 5,
     borderColor: 'black',
@@ -340,6 +341,11 @@ const styles = StyleSheet.create({
   btn: {
     borderRadius: 5,
     flex: 1,
+  },
+  sel_img: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
   },
   flexrow : {
     flexDirection: 'row',

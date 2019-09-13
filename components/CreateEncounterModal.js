@@ -3,7 +3,8 @@ import {
     View, 
     Text, 
     StyleSheet,
-    AsyncStorage, } from 'react-native';
+    AsyncStorage, 
+} from 'react-native';
 import { Button } from 'native-base';
 import strings from '../constants/Strings';
 import Modal from "react-native-modal";
@@ -21,26 +22,16 @@ export default class CreateEncounterModal extends React.Component {
           CEMmodalVisible: false,
           npcs: [new NPC()],
           adventurers: [new NPC()],
-          choose_adventurers: [new NPC()],
+          msg: null,
         };
 
         CEMopenModal = () => {
           this.setState({
             CEMmodalVisible: true,
-            choose_adventurers: getAdventurers(),
           });
         }
         CEMcloseModal = () => {
           this.setState({CEMmodalVisible:false});
-        }
-        getAdventurers = async () => {
-            let adv = JSON.parse(await AsyncStorage.getItem(strings.keys.adventurers));
-            let preppedAdv = [];
-
-            for (let i = 0; i < adv.length; i++)
-                preppedAdv.push({key: i, label: adv[i].name});
-
-            return preppedAdv;
         }
         extendFormMon = () => {
             let formM = this.state.npcs;
@@ -72,14 +63,57 @@ export default class CreateEncounterModal extends React.Component {
             form.splice(id, 1);
             this.setState({adventurers: form});
         }
+        //validate and set default images
+        validateEncounter = (npcs, adventurers) => {
+            let i, msg = "", name = false, initiative = false;
+            //alert(npcs[0].name);
+            for (i = 0; i < npcs.length; i++)
+            {
+                npcs[i].img_key = strings.keys.monster_img;
+                if (!npcs[i].name)
+                    name = true;
+                if (!npcs[i].initiative)
+                    initiative = true;
+                
+            }
+            for (i = 0; i < adventurers.length; i++)
+            {
+                adventurers[i].img_key = strings.keys.adv_img;
+                if (!adventurers[i].name)
+                    name = true;
+                if (!adventurers[i].initiative)
+                    initiative = true;
+            }
+
+            //alert(name + " " + initiative);
+            if (name)
+                msg+=strings.validation_msg.name + "\n";
+            if (initiative)
+                msg+=strings.validation_msg.initiative + "\n";
+
+            //alert(msg);
+            return msg;
+            
+                
+        }
         generateEncounter = () => {
-            let allItems = this.state.npcs.concat(this.state.adventurers);
+            //this.setState({msg: null});
+            let msg = validateEncounter(this.state.npcs, this.state.adventurers)
+            //alert(msg);
+            if (!msg) //no msg
+            {
+                let allItems = this.state.npcs.concat(this.state.adventurers);
+                allItems.sort(compare);
 
-            allItems.sort(compare);
-
-            this.props.generate_list(allItems);
-            this.setState({npcs: [new NPC()], adventurers: [new NPC()]});
-            CEMcloseModal();
+                this.props.generate_list(allItems);
+                this.setState({npcs: [new NPC()], adventurers: [new NPC()]});
+                CEMcloseModal();
+            }
+            else 
+            {
+                this.setState({msg: msg});
+            }
+    
         }
         compare = (a, b) => {
             let aInt = parseInt(a.initiative,10);
@@ -91,32 +125,6 @@ export default class CreateEncounterModal extends React.Component {
             return 0;
         }
     }
-
-    // componentDidUpdate(prevState) {
-    //     if (this.state.npcs.length !== prevState.npcs.length) {
-    //         this.setState({npcs: this.state.npcs});
-    //     }
-    // }
-
-    // componentDidMount() {
-    //     this.loadMonsters();
-    // }
-
-    // async loadMonsters() {
-    //     let response = await monsterApi.getMonsters();
-    //     //this.setState({monsters: response.data});
-    //     response = response.data;
-    //     //alert("Load" + JSON.stringify(response));
-
-    //     let monstersRefined = [];
-
-    //     for (let i = 0; i < response.count; i++)
-    //     {
-    //         monstersRefined.push({key: i, label: response.results[i].name, url: response.results[i].url});
-    //     }
-    //     alert("Load" + JSON.stringify(monstersRefined));
-    //     this.setState({monsters: monstersRefined});
-    // }
 
 
     render() {
@@ -130,6 +138,8 @@ export default class CreateEncounterModal extends React.Component {
 
                         <Text style={styles.title}>{strings.drawer.initDrawerCreate}</Text>
 
+                        <Text style={styles.formtitle}>{strings.create_encounter_form.monsters}</Text>
+
                         {this.state.npcs.map(function(listitem, index){
                             return(
                                 <MonsterNpcForm
@@ -140,6 +150,8 @@ export default class CreateEncounterModal extends React.Component {
                                 />
                             )
                         })}
+
+                        <Text style={styles.formtitle}>{strings.create_encounter_form.adventurers}</Text>
 
                         {this.state.adventurers.map(function(listitem, index){
                             return(
@@ -159,6 +171,10 @@ export default class CreateEncounterModal extends React.Component {
                             <Button light block style={styles.btn} onPress={() => extendFormAdv()}>
                                 <Text>{strings.create_encounter_form.addAdventurer}</Text>
                             </Button>
+                        </View> 
+
+                        <View style={styles.validation_text}>
+                            <Text style={styles.danger}>{this.state.msg}</Text>
                         </View>
 
                         <View style={styles.flexrowBottom}>
@@ -185,6 +201,21 @@ export default class CreateEncounterModal extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+    },
+    danger: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: 'red',
+    },
+    validation_text: {
+        marginTop: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    formtitle: {
+        fontWeight : 'bold',
+        fontSize : 18,
+        marginBottom : 5,
     },
     title : {
         fontWeight : 'bold',

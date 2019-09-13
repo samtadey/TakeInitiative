@@ -46,6 +46,10 @@ myMap.set("female_fighter", require('../assets/character_icons/female_fighter.pn
 myMap.set("male_cleric", require('../assets/character_icons/male_cleric.png'));
 myMap.set("female_cleric", require('../assets/character_icons/female_cleric.png'));
 
+myMap.set("default_adventurer", require('../assets/character_icons/default_adventurer.png'));
+myMap.set("default_monster", require('../assets/monster_icons/monster_icon.png'));
+
+
 export default class InitiativeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: "Initiative Order",

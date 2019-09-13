@@ -15,18 +15,28 @@ export default class InitiativeItem extends React.Component {
                   <Image style={styles.photo} source={this.props.image}/>
                 </View>
                 <View style={styles.adventurer_container_text}>
+
                   <View style={styles.flexrow}>
                     <Text style={styles.classifier}>Name: </Text>
                     <Text>{this.props.name}</Text>
                   </View>
-                  <View style={styles.flexrow}>
-                    <Text style={styles.classifier}>Type: </Text>
-                    <Text>{this.props.adv_class}</Text>
-                  </View>
-                  <View style={styles.flexrow}>
-                    <Text style={styles.classifier}>Race: </Text>
-                    <Text>{this.props.race}</Text>
-                  </View>
+
+                  {/* optional */}
+                  {this.props.adv_class ? 
+                    <View style={styles.flexrow}>
+                        <Text style={styles.classifier}>Type: </Text>
+                        <Text>{this.props.adv_class}</Text>
+                    </View>
+                  : <View/>}
+
+                  {/* optional */}
+                  {this.props.race ? 
+                    <View style={styles.flexrow}>
+                        <Text style={styles.classifier}>Race: </Text>
+                        <Text>{this.props.race}</Text>
+                    </View>
+                  : <View/>}
+
                 </View>
                 <View style={styles.image_right}>
                     <Text style={styles.initiativeSize}>{this.props.initiative}</Text>

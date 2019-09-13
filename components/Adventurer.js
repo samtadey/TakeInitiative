@@ -8,29 +8,36 @@ export default class Adventurer extends React.Component {
 
     render() {
         return (
-            <TouchableOpacity onPress={() => {this.props.editAdv(this.props.name, this.props.adv_class, this.props.race, this.props.image, this.props.id, 1)}}>
+            <TouchableOpacity onPress={() => {this.props.editAdv(this.props.name, this.props.adv_class, this.props.race, this.props.img_key, this.props.id, 1)}}>
             <View style={styles.adventurer_container}>
               <View style={styles.flexrow}>
                 <View style={styles.image_left}>
                   <Image style={styles.photo} source={this.props.image}/>
                 </View>
                 <View style={styles.adventurer_container_text}>
+
                   <View style={styles.flexrow}>
                     <Text style={styles.classifier}>Name: </Text>
                     <Text>{this.props.name}</Text>
                   </View>
+
+                  {/* Optional */}
+                  {this.props.adv_class ? 
                   <View style={styles.flexrow}>
                     <Text style={styles.classifier}>Class: </Text>
                     <Text>{this.props.adv_class}</Text>
                   </View>
+                  : <View/>}
+
+                  {/* Optional */}
+                  {this.props.race ?
                   <View style={styles.flexrow}>
                     <Text style={styles.classifier}>Race: </Text>
                     <Text>{this.props.race}</Text>
                   </View>
+                  : <View/>}
                 </View>
-                {/* <View style={styles.image_right}>
-                  <Image style={styles.photo} source={require('../assets/character_icons/death.png')}/>
-                </View> */}
+          
               </View>
             </View>
             </TouchableOpacity>

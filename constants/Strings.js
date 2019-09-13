@@ -16,12 +16,19 @@ export default {
     legResist: 'Resistances',
   },
 
+  validation_msg: {
+    name: "Name is required",
+    initiative: "Initiative is required",
+  },
+
   create_encounter_form : {
     addMonster: 'Add Monster/NPC',
     addAdventurer: 'Add Adventurer',
     removeAdventurer: 'Remove Adventurer',
     monsterFormName: 'Choose Monster',
     adventurerFormName: 'Choose Adventurer',
+    monsters: 'Create Monsters:',
+    adventurers: 'Create Adventurers:',
   },
 
   drawer : {
@@ -35,5 +42,7 @@ export default {
   keys : {
     initiative_list: 'initiative_list',
     adventurers: 'adventurers',
+    adv_img: "default_adventurer",
+    monster_img: "default_monster",
   },
 };
