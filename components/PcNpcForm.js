@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import NPC from '../classes/NPC';
 import monsterApi from '../api/dnd5api'
 
-export default class MonsterNpcForm extends React.Component {
+export default class PcNpcForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -44,7 +44,7 @@ export default class MonsterNpcForm extends React.Component {
 
 
     componentDidUpdate(prevProps) {
-        if (this.props.id !== prevProps.id) {
+        if (this.props.id !== prevProps.id || this.props.npc !== prevProps.npc) {
           this.setState({
             npc: this.props.npc
           })
@@ -56,45 +56,48 @@ export default class MonsterNpcForm extends React.Component {
     }
 
     updtAll(name, type, race, img) {
-        this.updtName(name);
-        this.updtType(type);
-        this.updtRace(race);
-        this.updtImg(img);
+        let npc = this.state.npc;
+        npc.name = name;
+        npc.type = type;
+        npc.race = race;
+        npc.img_key = img;
+        //this.setState({npc: npc});
+        this.props.updateForm(this.props.id, npc);
     }
 
     async updtName(text) {
         let npc = this.state.npc;
         npc.name = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.props.id, npc);
+        //this.props.updateForm(this.props.id, npc);
     }
 
     updtType(text) {
         let npc = this.state.npc;
         npc.type = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.props.id, npc);
+        //this.props.updateForm(this.props.id, npc);
     }
 
     updtRace(text) {
         let npc = this.state.npc;
         npc.race = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.props.id, npc);
+        //this.props.updateForm(this.props.id, npc);
     }
 
     updtImg(text) {
         let npc = this.state.npc;
         npc.img_key = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.props.id, npc);
+        //this.props.updateForm(this.props.id, npc);
     }
     
     updtInitiative(text) {
         let npc = this.state.npc;
         npc.initiative = text;
         this.setState({npc: npc});
-        this.props.updateForm(this.props.id, npc);
+        //this.props.updateForm(this.props.id, npc);
     }
 
     render() {
@@ -148,13 +151,6 @@ export default class MonsterNpcForm extends React.Component {
             </View>
         );
     }
-}
-
-MonsterNpcForm.propTypes = {
-    id: PropTypes.number
-  }
-MonsterNpcForm.defaultProps = {
-    id: -1
 }
 
 const styles = StyleSheet.create({

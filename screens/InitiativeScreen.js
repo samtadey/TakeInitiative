@@ -102,6 +102,12 @@ export default class InitiativeScreen extends React.Component {
       }
     }
 
+    remove_unit = (index) => {
+      list = this.state.initiative_list;
+      list.splice(index,1);
+      this.setState({initiative_list: list});
+    }
+
     add_unit = (npc) => {
       let list = this.state.initiative_list;
       let first, second;
@@ -110,7 +116,6 @@ export default class InitiativeScreen extends React.Component {
       if (list.length === 0)
       {
         list.push(npc);
-        //this.setState({initiative_list: list});
       }
       else if (list.length === 1)
       {
@@ -126,11 +131,7 @@ export default class InitiativeScreen extends React.Component {
         for (let i = 0; i < list.length - 1; i++)
         {
           first = parseInt(list[i].initiative, 10);
-
-          //if (i != list.length - 1)
           second = parseInt(list[i + 1].initiative, 10);
-          // else 
-          //   second = parseInt(list[0].initiative, 10);
         
           if (first <= second && toAdd >= second || first <= second && toAdd <= second) //toAdd is greatest or least
           {
@@ -178,7 +179,7 @@ export default class InitiativeScreen extends React.Component {
     return (
       <Drawer
         type="overlay"
-        content={<InitiativeActionsDrawer list={this.state.initiative_list} generate_list={generate_list} advance_list={advance_list} add_unit={add_unit} clear_list={clear_list}/>}
+        content={<InitiativeActionsDrawer list={this.state.initiative_list} generate_list={generate_list} advance_list={advance_list} add_unit={add_unit} remove_unit={remove_unit} clear_list={clear_list}/>}
         tapToClose={true}
         open={this.state.drawer_open}
         openDrawerOffset={0.2} // 20% gap on the right side of drawer

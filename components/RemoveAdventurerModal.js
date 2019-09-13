@@ -33,7 +33,6 @@ export default class RemoveAdventurerModal extends React.Component {
     }
 
     prepRemoveList = (list) => {
-        //alert(JSON.stringify(list));
         let prepped_list = [];
         for (let i = 0; i < list.length; i++)
             prepped_list.push({key: i, label: list[i].name});

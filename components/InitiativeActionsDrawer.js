@@ -18,7 +18,7 @@ class InitiativeActionsDrawer extends React.Component {
 
                 <AddUnitModal add_unit={this.props.add_unit}/>
 
-                <RemoveUnitModal list={this.props.list}/>
+                <RemoveUnitModal remove_unit={this.props.remove_unit} list={this.props.list}/>
 
                 <View style={styles.bottom}>
                     <CreateEncounterModal generate_list={this.props.generate_list}/>

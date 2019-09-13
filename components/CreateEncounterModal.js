@@ -40,7 +40,9 @@ export default class CreateEncounterModal extends React.Component {
         }
         extendFormAdv = () => {
             let formA = this.state.adventurers;
-            formA.push(new NPC());
+            let a = new NPC();
+            a.name = "Ted";
+            formA.push(a);
             this.setState({adventurers: formA});
         }
         updNpc = (id, npc) => {
@@ -78,7 +80,8 @@ export default class CreateEncounterModal extends React.Component {
             }
             for (i = 0; i < adventurers.length; i++)
             {
-                adventurers[i].img_key = strings.keys.adv_img;
+                if (!adventurers[i].img_key)
+                    adventurers[i].img_key = strings.keys.adv_img;
                 if (!adventurers[i].name)
                     name = true;
                 if (!adventurers[i].initiative)
@@ -145,6 +148,7 @@ export default class CreateEncounterModal extends React.Component {
                                 <MonsterNpcForm
                                     key={index}
                                     id={index}
+                                    npc={listitem}
                                     updateForm={updNpc}
                                     deleteItem={delNpc}
                                 />

@@ -17,17 +17,22 @@ export default class RemoveUnitModal extends React.Component {
     this.state = {
       RUMmodalvisible: false,
       avail_remove_list: [],
+      choice_index: -1,
     };
 
     RUMopenModal = () => {
         this.setState({
           RUMmodalvisible: true,
           avail_remove_list: initInitiativeList(this.props.list),
+          choice_index: -1,
         });
       }
 
     RUMcloseModal = () => {
-        this.setState({RUMmodalvisible:false});
+        this.setState({
+          RUMmodalvisible:false,
+          choice_index: -1,
+        });
     }
 
     initInitiativeList = (list) => {
@@ -35,13 +40,15 @@ export default class RemoveUnitModal extends React.Component {
         {
             let prepared_list = [];
             for (let i = 0; i < list.length; i++)
-            {
-                prepared_list.push({key: i, label: list[i].name});
-            }
+              prepared_list.push({key: i, label: list[i].name});
             return prepared_list;
-            //this.setState({avail_remove_list: prepared_list});
         }
         return [];
+    }
+
+    handleRemoveUnit = (index) => {
+      if (index >= 0)
+        this.props.remove_unit(index);
     }
   }
 
@@ -71,14 +78,14 @@ export default class RemoveUnitModal extends React.Component {
             data={this.state.avail_remove_list}
             style={styles.spacer}
             initValue="Choose to Remove"
-            //onChange={(option)=>{ this.setState({adv_class: option.label}) }} 
+            onChange={(option)=>{ this.setState({choice_index: option.key}) }} 
             />
 
             <View style={styles.flexrow}>
                 <Button danger block style={styles.btn} onPress={() => RUMcloseModal()}>
                     <Text style={{color:'white'}}>Close</Text>
                 </Button>
-                <Button success block style={styles.btn}>
+                <Button success block style={styles.btn} onPress={() => handleRemoveUnit(this.state.choice_index)}>
                     <Text style={{color:'white'}}>Confirm</Text>
                 </Button>
             </View>
