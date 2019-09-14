@@ -28,13 +28,11 @@ export default class PcNpcForm extends React.Component {
             this.setState({adventurers: preppedAdv});
         }
 
+        //didn't work in the other format up above
         this.deleteFormItem = this.deleteFormItem.bind(this);
-
         this.updtAll = this.updtAll.bind(this);
         this.updtName = this.updtName.bind(this);
         this.updtType = this.updtType.bind(this);
-        this.updtRace = this.updtRace.bind(this);
-        this.updtImg = this.updtImg.bind(this);
         this.updtInitiative = this.updtInitiative.bind(this);
     }
 
@@ -42,7 +40,7 @@ export default class PcNpcForm extends React.Component {
         getAdventurers();
     }
 
-
+    //update form when other form gets deleted in the CEM
     componentDidUpdate(prevProps) {
         if (this.props.id !== prevProps.id || this.props.npc !== prevProps.npc) {
           this.setState({
@@ -61,43 +59,25 @@ export default class PcNpcForm extends React.Component {
         npc.type = type;
         npc.race = race;
         npc.img_key = img;
-        //this.setState({npc: npc});
         this.props.updateForm(this.props.id, npc);
     }
 
     async updtName(text) {
         let npc = this.state.npc;
         npc.name = text;
-        this.setState({npc: npc});
-        //this.props.updateForm(this.props.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
 
     updtType(text) {
         let npc = this.state.npc;
         npc.type = text;
-        this.setState({npc: npc});
-        //this.props.updateForm(this.props.id, npc);
-    }
-
-    updtRace(text) {
-        let npc = this.state.npc;
-        npc.race = text;
-        this.setState({npc: npc});
-        //this.props.updateForm(this.props.id, npc);
-    }
-
-    updtImg(text) {
-        let npc = this.state.npc;
-        npc.img_key = text;
-        this.setState({npc: npc});
-        //this.props.updateForm(this.props.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
     
     updtInitiative(text) {
         let npc = this.state.npc;
         npc.initiative = text;
-        this.setState({npc: npc});
-        //this.props.updateForm(this.props.id, npc);
+        this.props.updateForm(this.props.id, npc);
     }
 
     render() {
@@ -108,8 +88,7 @@ export default class PcNpcForm extends React.Component {
                     <ModalSelector
                         data={this.state.adventurers}
                         style={styles.modalselector}
-                        initValue={strings.create_encounter_form.adventurerFormName}
-                        // onChange={(option)=>{ this.updtName(option.label) }} />
+                        initValue={this.state.npc.name ? this.state.npc.name : strings.create_encounter_form.adventurerFormName}
                         onChange={(option)=>{ this.updtAll(option.label, option.type, option.race, option.img_key) }} />
 
                     <TouchableOpacity onPress={this.deleteFormItem} style={styles.closeIcon}>

@@ -40,9 +40,7 @@ export default class CreateEncounterModal extends React.Component {
         }
         extendFormAdv = () => {
             let formA = this.state.adventurers;
-            let a = new NPC();
-            a.name = "Ted";
-            formA.push(a);
+            formA.push(new NPC());
             this.setState({adventurers: formA});
         }
         updNpc = (id, npc) => {
@@ -148,7 +146,7 @@ export default class CreateEncounterModal extends React.Component {
                                 <MonsterNpcForm
                                     key={index}
                                     id={index}
-                                    npc={listitem}
+                                    monster={listitem}
                                     updateForm={updNpc}
                                     deleteItem={delNpc}
                                 />
@@ -162,6 +160,7 @@ export default class CreateEncounterModal extends React.Component {
                                 <PcNpcForm
                                     key={index}
                                     id={index}
+                                    npc={listitem}
                                     updateForm={updAdv}
                                     deleteItem={delAdv}
                                 />

@@ -28,6 +28,14 @@ export default class MonsterNpcForm extends React.Component {
         //this.loadMonsterInfo = this.loadMonsterInfo.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.id !== prevProps.id || this.props.monster !== prevProps.monster) {
+          this.setState({
+            npc: this.props.monster
+          })
+        }
+    }
+
     deleteFormItem() {
         this.props.deleteItem(this.props.id);
     }
@@ -35,28 +43,28 @@ export default class MonsterNpcForm extends React.Component {
     async updtName(text) {
         let npc = this.state.npc;
         npc.name = text;
-        this.setState({npc: npc});
+        //this.setState({npc: npc});
         this.props.updateForm(this.props.id, npc);
     }
 
     updtType(text) {
         let npc = this.state.npc;
         npc.type = text;
-        this.setState({npc: npc});
+        //this.setState({npc: npc});
         this.props.updateForm(this.props.id, npc);
     }
 
     updtHealth(text) {
         let npc = this.state.npc;
         npc.health = text;
-        this.setState({npc: npc});
+        //this.setState({npc: npc});
         this.props.updateForm(this.props.id, npc);
     }
     
     updtInitiative(text) {
         let npc = this.state.npc;
         npc.initiative = text;
-        this.setState({npc: npc});
+        //this.setState({npc: npc});
         this.props.updateForm(this.props.id, npc);
     }
 
