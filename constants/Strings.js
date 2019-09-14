@@ -39,10 +39,15 @@ export default {
     initDrawerClear: 'Clear Current Encounter',
   },
 
+  settings : {
+    themes_title: 'Select a Theme:'
+  },
+
   keys : {
     initiative_list: 'initiative_list',
     adventurers: 'adventurers',
     adv_img: "default_adventurer",
     monster_img: "default_monster",
+    theme: 'listitem_theme',
   },
 };

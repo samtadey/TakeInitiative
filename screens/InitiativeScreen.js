@@ -162,6 +162,13 @@ export default class InitiativeScreen extends React.Component {
     retrieve_list();
   }
 
+  // componentDidUpdate(prevState) {
+  //   if (this.state.initiative_list !== prevState.initiative_list)
+  //   {
+
+  //   }
+  // }
+
   async componentWillUnmount() {
     //alert("Test");
     await AsyncStorage.setItem(strings.keys.initiative_list, JSON.stringify(this.state.initiative_list))
