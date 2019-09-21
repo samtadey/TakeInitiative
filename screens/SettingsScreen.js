@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import ThemeItem from '../components/ThemeItem'
 import strings from '../constants/Strings'
-import theme from '../constants/Themes'
+import {themes} from '../constants/Themes'
 
 
 
@@ -27,7 +27,7 @@ export default class SettingsScreen extends React.Component {
       <ScrollView>
         <View style={styles.container}>
           <Text style={styles.title}>{strings.settings.themes_title}</Text>
-          {theme.themes.map(function(listitem, index){
+          {themes.map(function(listitem, index){
             return(
                 <ThemeItem 
                   key={index}

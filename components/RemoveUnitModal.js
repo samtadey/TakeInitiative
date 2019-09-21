@@ -49,6 +49,7 @@ export default class RemoveUnitModal extends React.Component {
     handleRemoveUnit = (index) => {
       if (index >= 0)
         this.props.remove_unit(index);
+        RUMcloseModal();
     }
   }
 

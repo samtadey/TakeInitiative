@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {ThemeContext} from '../constants/Themes';
 
 export default class InitiativeItem extends React.Component {
     constructor(props) {
@@ -8,8 +9,10 @@ export default class InitiativeItem extends React.Component {
 
     render() {
         return (
+            <ThemeContext.Consumer>
+            {({theme}) => (
             // <TouchableOpacity onPress={() => {this.props.editAdv(this.props.name, this.props.adv_class, this.props.race)}}>
-            <View style={styles.adventurer_container}>
+            <View style={[styles.adventurer_container, theme]}>
               <View style={styles.flexrow}>
                 <View style={styles.image_left}>
                   <Image style={styles.photo} source={this.props.image}/>
@@ -44,6 +47,8 @@ export default class InitiativeItem extends React.Component {
               </View>
             </View>
             // </TouchableOpacity>
+            )}
+            </ThemeContext.Consumer>
         );
     }
 }
@@ -52,7 +57,7 @@ const styles = StyleSheet.create({
     adventurer_container: {
         padding: 5,
         borderRadius: 5, 
-        borderColor: '#7D7D7D', 
+        borderColor: '#7D7D7D',
         borderWidth: 5,
         height: 100, 
         marginBottom: 10,

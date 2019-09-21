@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {ThemeContext} from '../constants/Themes';
 
 export default class Adventurer extends React.Component {
     constructor(props) {
@@ -8,8 +9,10 @@ export default class Adventurer extends React.Component {
 
     render() {
         return (
+          <ThemeContext.Consumer>
+          {({theme}) => (
             <TouchableOpacity onPress={() => {this.props.editAdv(this.props.name, this.props.adv_class, this.props.race, this.props.img_key, this.props.id, 1)}}>
-            <View style={styles.adventurer_container}>
+            <View style={[styles.adventurer_container, theme]}>
               <View style={styles.flexrow}>
                 <View style={styles.image_left}>
                   <Image style={styles.photo} source={this.props.image}/>
@@ -41,6 +44,8 @@ export default class Adventurer extends React.Component {
               </View>
             </View>
             </TouchableOpacity>
+          )}
+          </ThemeContext.Consumer>
         );
     }
 }

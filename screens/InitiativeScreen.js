@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   AsyncStorage,
+  Text,
 } from 'react-native';
 import { Icon, Button } from 'native-base';
 import Drawer from 'react-native-drawer'
@@ -13,6 +14,8 @@ import asyncstorage from '../storage/asyncstorage';
 import strings from '../constants//Strings';
 import InitiativeActionsDrawer from '../components/InitiativeActionsDrawer';
 import InitiativeItem from '../components/InitiativeItem';
+import {ThemeContext} from '../constants/Themes';
+import Styles from '../constants/Styles.js'
 
 var myMap = new Map();
 // setting the values
@@ -162,15 +165,7 @@ export default class InitiativeScreen extends React.Component {
     retrieve_list();
   }
 
-  // componentDidUpdate(prevState) {
-  //   if (this.state.initiative_list !== prevState.initiative_list)
-  //   {
-
-  //   }
-  // }
-
   async componentWillUnmount() {
-    //alert("Test");
     await AsyncStorage.setItem(strings.keys.initiative_list, JSON.stringify(this.state.initiative_list))
       .then(json => console.log('success!'))
       .catch(error => console.log('error!'));
