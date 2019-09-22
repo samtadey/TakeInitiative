@@ -46,5 +46,6 @@ export default {
         { key: 30, label: 'Minotaur' },
         { key: 31, label: 'Simic Hybrid' },
         { key: 32, label: 'Vedalken' },
+        { key: 33, label: 'Tabaxi'},
     ],
   };

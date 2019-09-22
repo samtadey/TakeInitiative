@@ -24,4 +24,8 @@ export default StyleSheet.create({
         height: 75,
         width: 75,
     },
+    con_dan_buttons : {
+        borderRadius: 5,
+        color: 'white'
+    }
 });

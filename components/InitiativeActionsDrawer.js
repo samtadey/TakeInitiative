@@ -1,28 +1,28 @@
 import React from 'react';
-import { View, Platform, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet} from 'react-native';
 import { Button } from 'native-base';
 import { withNavigation } from 'react-navigation';
 import strings from '../constants/Strings'
+import CreateEncounterModal from '../components/CreateEncounterModal';
+import AddUnitModal from '../components/AddUnitModal';
+import RemoveUnitModal from '../components/RemoveUnitModal';
 
 class InitiativeActionsDrawer extends React.Component {
 
     render() {
         return (
             <View style={styles.container}>
-                <Button light full style={styles.spacing}>
+                <Button light full style={styles.spacing} onPress={() => this.props.advance_list()}>
                     <Text>{strings.drawer.initDrawerAdvance}</Text>
                 </Button>
-                <Button light full style={styles.spacing}>
-                    <Text>{strings.drawer.initDrawerAdd}</Text>
-                </Button>
-                <Button light full style={styles.spacing}>
-                    <Text>{strings.drawer.initDrawerRemove}</Text>
-                </Button>
+
+                <AddUnitModal add_unit={this.props.add_unit}/>
+
+                <RemoveUnitModal remove_unit={this.props.remove_unit} list={this.props.list}/>
+
                 <View style={styles.bottom}>
-                    <Button success full style={styles.spacing}>
-                        <Text style={{color: 'white'}}>{strings.drawer.initDrawerCreate}</Text>
-                    </Button>
-                    <Button danger full style={styles.spacing}>
+                    <CreateEncounterModal generate_list={this.props.generate_list}/>
+                    <Button danger full style={styles.spacing} onPress={() => this.props.clear_list()}>
                         <Text style={{color: 'white'}}>{strings.drawer.initDrawerClear}</Text>
                     </Button>
                 </View>
@@ -30,6 +30,8 @@ class InitiativeActionsDrawer extends React.Component {
         );
     }
 }
+
+
 
 const styles = StyleSheet.create({
     container: {

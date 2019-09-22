@@ -3,16 +3,16 @@
     "name": "TakeInitiative",
     "slug": "TakeInitiative",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/dragon_icon.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/dragon_icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,7 +23,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "app.takeinitiative"
+    },
+    "android": {
+      "package": "app.takeinitiative"
     }
   }
 }

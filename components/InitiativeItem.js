@@ -2,16 +2,16 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import {ThemeContext} from '../constants/Themes';
 
-export default class Adventurer extends React.Component {
+export default class InitiativeItem extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-          <ThemeContext.Consumer>
-          {({theme}) => (
-            <TouchableOpacity onPress={() => {this.props.editAdv(this.props.name, this.props.adv_class, this.props.race, this.props.img_key, this.props.id, 1)}}>
+            <ThemeContext.Consumer>
+            {({theme}) => (
+            // <TouchableOpacity onPress={() => {this.props.editAdv(this.props.name, this.props.adv_class, this.props.race)}}>
             <View style={[styles.adventurer_container, theme]}>
               <View style={styles.flexrow}>
                 <View style={styles.image_left}>
@@ -24,28 +24,31 @@ export default class Adventurer extends React.Component {
                     <Text>{this.props.name}</Text>
                   </View>
 
-                  {/* Optional */}
+                  {/* optional */}
                   {this.props.adv_class ? 
-                  <View style={styles.flexrow}>
-                    <Text style={styles.classifier}>Class: </Text>
-                    <Text>{this.props.adv_class}</Text>
-                  </View>
+                    <View style={styles.flexrow}>
+                        <Text style={styles.classifier}>Type: </Text>
+                        <Text>{this.props.adv_class}</Text>
+                    </View>
                   : <View/>}
 
-                  {/* Optional */}
-                  {this.props.race ?
-                  <View style={styles.flexrow}>
-                    <Text style={styles.classifier}>Race: </Text>
-                    <Text>{this.props.race}</Text>
-                  </View>
+                  {/* optional */}
+                  {this.props.race ? 
+                    <View style={styles.flexrow}>
+                        <Text style={styles.classifier}>Race: </Text>
+                        <Text>{this.props.race}</Text>
+                    </View>
                   : <View/>}
+
                 </View>
-          
+                <View style={styles.image_right}>
+                    <Text style={styles.initiativeSize}>{this.props.initiative}</Text>
+                </View>
               </View>
             </View>
-            </TouchableOpacity>
-          )}
-          </ThemeContext.Consumer>
+            // </TouchableOpacity>
+            )}
+            </ThemeContext.Consumer>
         );
     }
 }
@@ -54,7 +57,7 @@ const styles = StyleSheet.create({
     adventurer_container: {
         padding: 5,
         borderRadius: 5, 
-        borderColor: '#7D7D7D', 
+        borderColor: '#7D7D7D',
         borderWidth: 5,
         height: 100, 
         marginBottom: 10,
@@ -66,7 +69,6 @@ const styles = StyleSheet.create({
         flex: 2,
         justifyContent: 'center'
     },
-    
     image_left: {
         display: 'flex',
         flex: 1,
@@ -76,8 +78,12 @@ const styles = StyleSheet.create({
     image_right: {
         display: 'flex',
         flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    initiativeSize: {
+        fontSize: 36,
+        fontWeight: 'bold'
     },
     photo: {
         height: 75,

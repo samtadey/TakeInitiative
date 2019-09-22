@@ -1,14 +1,47 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, AsyncStorage } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+//import themes from './constants/Themes'
+import {ThemeContext, themes} from './constants/Themes';
+import strings from './constants/Strings';
+//import {ThemeProvider, ThemeConsumer, ThemeContext } from './components/ThemeProvider';
 
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoadingComplete: false,
+      theme: themes[0],
+    };
+
+    this.toggleTheme = (theme) => {
+      this.setTheme(theme);
+    };
+
+    this.setTheme = async (theme) => {     
+      await AsyncStorage.setItem(strings.keys.theme, JSON.stringify(theme))
+        .then(json => "Pass")
+        .catch(error => "Fail");
+
+      this.setState({theme: theme});
+    }
+
+    this.getTheme = async () => {
+      await AsyncStorage.getItem(strings.keys.theme)
+      .then(req => JSON.parse(req))
+      .then(json => json ? this.setState({theme: json}) : themes[0])
+      .catch(error => console.log('error!'));
+    }
+
+  }
+
+  componentDidMount() {
+    this.getTheme();
+  }
 
   render() {
+    //alert(JSON.stringify(this.state.theme));
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -19,10 +52,12 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
-        </View>
+        <ThemeContext.Provider value={{theme: this.state.theme, changeTheme: this.toggleTheme}}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <AppNavigator />
+          </View>
+        </ThemeContext.Provider>
       );
     }
   }

@@ -7,18 +7,49 @@ import {
   View,
   Button,
 } from 'react-native';
+import ThemeItem from '../components/ThemeItem'
+import strings from '../constants/Strings'
+import {themes} from '../constants/Themes'
+
+
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: "Settings",
   })
 
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <View>
-        <Text>Hi Warld</Text>
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.title}>{strings.settings.themes_title}</Text>
+          {themes.map(function(listitem, index){
+            return(
+                <ThemeItem 
+                  key={index}
+                  my_style={listitem}
+                />)
+          })}
+        </View>
+      </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 10,
+  },
+  title : {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  }
+});
 
