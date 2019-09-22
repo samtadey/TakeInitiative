@@ -14,7 +14,6 @@ import asyncstorage from '../storage/asyncstorage';
 import strings from '../constants//Strings';
 import InitiativeActionsDrawer from '../components/InitiativeActionsDrawer';
 import InitiativeItem from '../components/InitiativeItem';
-import {ThemeContext} from '../constants/Themes';
 import Styles from '../constants/Styles.js'
 
 var myMap = new Map();
@@ -136,7 +135,7 @@ export default class InitiativeScreen extends React.Component {
           first = parseInt(list[i].initiative, 10);
           second = parseInt(list[i + 1].initiative, 10);
         
-          if (first <= second && toAdd >= second || first <= second && toAdd <= second) //toAdd is greatest or least
+          if (first <= second && toAdd >= second || first <= second && toAdd <= first) //toAdd is greatest or least
           {
             list.splice(i+1, 0, npc);
             added = 1;
