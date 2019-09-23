@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   },
   add_button: {
     borderRadius: 5,
+    marginBottom: 10,
   },
   formInput:{
     borderColor:'#CAECE4',

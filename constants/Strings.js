@@ -27,8 +27,8 @@ export default {
     removeAdventurer: 'Remove Adventurer',
     monsterFormName: 'Choose Monster',
     adventurerFormName: 'Choose Adventurer',
-    monsters: 'Create Monsters:',
-    adventurers: 'Create Adventurers:',
+    monsters: 'Add Monsters:',
+    adventurers: 'Add Adventurers:',
   },
 
   drawer : {

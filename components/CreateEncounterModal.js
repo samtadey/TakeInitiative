@@ -93,17 +93,15 @@ export default class CreateEncounterModal extends React.Component {
                 msg+=strings.validation_msg.initiative + "\n";
 
             //alert(msg);
-            return msg;
-            
-                
+            return msg;   
         }
-        generateEncounter = () => {
+        generateEncounter = (npcs, adv) => {
             //this.setState({msg: null});
-            let msg = validateEncounter(this.state.npcs, this.state.adventurers)
+            let msg = validateEncounter(npcs, adv)
             //alert(msg);
             if (!msg) //no msg
             {
-                let allItems = this.state.npcs.concat(this.state.adventurers);
+                let allItems = npcs.concat(adv);
                 allItems.sort(compare);
 
                 this.props.generate_list(allItems);
@@ -114,8 +112,15 @@ export default class CreateEncounterModal extends React.Component {
             {
                 this.setState({msg: msg});
             }
-    
         }
+
+        // generateEncounter = (npcs, adv) => {
+        //     let allItems = npcs.concat(adv);
+        //     allItems.sort(compare);
+
+        //     this.props.generate_list(allItems);
+        //         //this.setState({npcs: [new NPC()], adventurers: [new NPC()]});
+        // }
         compare = (a, b) => {
             let aInt = parseInt(a.initiative,10);
             let bInt = parseInt(b.initiative,10);
@@ -135,6 +140,7 @@ export default class CreateEncounterModal extends React.Component {
                 visible={this.state.CEMmodalVisible}
                 animationType={'slide'}
                 onBackdropPress={() => CEMcloseModal()}>
+                    <View>
                     <ScrollView style={styles.modal_container}>
 
                         <Text style={styles.title}>{strings.drawer.initDrawerCreate}</Text>
@@ -184,12 +190,13 @@ export default class CreateEncounterModal extends React.Component {
                             <Button danger block style={styles.btn} onPress={() => CEMcloseModal()}>
                                 <Text style={{color:'white'}}>Close</Text>
                             </Button>
-                            <Button success block style={styles.btn} onPress={() => generateEncounter()}>
+                            <Button success block style={styles.btn} onPress={() => generateEncounter(this.state.npcs, this.state.adventurers)}>
                                 <Text style={{color:'white'}}>Confirm</Text>
                             </Button>
                         </View>
 
                     </ScrollView>
+                    </View>
                 </Modal>
 
                 <Button success block onPress={() => CEMopenModal()} style={styles.spacing}>
@@ -204,6 +211,16 @@ export default class CreateEncounterModal extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+    },
+    test_container : {
+        height:100,
+    },
+    modal_container: {
+        backgroundColor: '#FFFFFF',
+        padding: 10,
+        borderRadius: 5,
+        borderColor: 'black',
+        borderWidth: 1,
     },
     danger: {
         fontSize: 14,
@@ -225,13 +242,6 @@ const styles = StyleSheet.create({
         fontSize : 24,
         marginBottom : 10,
     },
-    modal_container: {
-      backgroundColor: '#FFFFFF',
-      padding: 10,
-      borderRadius: 5,
-      borderColor: 'black',
-      borderWidth: 1,
-    },
     add_button: {
       borderRadius: 5,
       marginTop: 10,
@@ -248,6 +258,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         display: 'flex',
         marginTop: 100,
+        marginBottom: 20,
     },
     btn : {
         flex: 1,
