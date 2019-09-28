@@ -70,6 +70,7 @@ To keep track of who is currently taking their turn, make sure to always advance
 <p align="center">
   <img width="30%" height="30%" src="./assets/readme/advance_init.PNG?raw=true "Title"">
 </p>
+
 ### Add Unit(s) to Encounter
 Should you need to add units to an already created encounter, you can use the add units action. From the actions drawer, select the 'Add Units to Encounter' action. This action functions much like the Create Encounter action. Fill monster and adventurer info into the forms and add/remove forms to regulate the number of units you plan to add to the encounter.
 
@@ -82,13 +83,16 @@ When the process is complete, choose 'Confirm' at the bottom of the screen. Your
 <p align="center">
   <img width="30%" height="30%" src="./assets/readme/aem_complete.PNG?raw=true "Title"">
 </p>
+
 ### Remove Unit from Encounter
 To remove a unit from the initiative list, select the 'Remove Unit from Encounter' action from the action drawer. Choose the unit you want to remove from the list and select 'Confirm' to see that unit removed from the initiative list on the initiative screen.
 
 <p align="center">
   <img width="30%" height="30%" src="./assets/readme/remove_unit_modal.PNG?raw=true "Title"">
 </p>
-## Settings 
+
+## Settings
+
 ### Set Theme
 Navigate to the settings screen to change the theme of your list items throughout the app. Selecting a theme will make it your new default theme.
 
