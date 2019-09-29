@@ -16,7 +16,7 @@ class InitiativeActionsDrawer extends React.Component {
                     <Text>{strings.drawer.initDrawerAdvance}</Text>
                 </Button>
 
-                <AddUnitModal add_unit={this.props.add_unit}/>
+                <AddUnitModal add_units={this.props.add_units}/>
 
                 <RemoveUnitModal remove_unit={this.props.remove_unit} list={this.props.list}/>
 

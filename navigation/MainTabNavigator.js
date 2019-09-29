@@ -4,7 +4,6 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import InitiativeScreen from '../screens/InitiativeScreen';
-import AdventuringPartiesScreen from '../screens/AdventuringPartiesScreen';
 import AdventurersScreen from '../screens/AdventurersScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -25,7 +24,6 @@ HomeStack.navigationOptions = {
 };
 
 const ManagePartyStack = createStackNavigator({
-  //AdventuringPartiesScreen: {screen: AdventuringPartiesScreen },
   AdventurersScreen: {screen: AdventurersScreen},
 });
 

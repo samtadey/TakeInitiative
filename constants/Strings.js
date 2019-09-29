@@ -19,6 +19,8 @@ export default {
   validation_msg: {
     name: "Name is required",
     initiative: "Initiative is required",
+    remove_adv: "Select an adventurer to remove",
+    remove_unit: "Select a unit to remove"
   },
 
   create_encounter_form : {
@@ -27,8 +29,8 @@ export default {
     removeAdventurer: 'Remove Adventurer',
     monsterFormName: 'Choose Monster',
     adventurerFormName: 'Choose Adventurer',
-    monsters: 'Create Monsters:',
-    adventurers: 'Create Adventurers:',
+    monsters: 'Add Monsters:',
+    adventurers: 'Add Adventurers:',
   },
 
   drawer : {
