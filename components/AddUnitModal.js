@@ -7,6 +7,7 @@ import PcNpcForm from '../components/PcNpcForm';
 import MonsterNpcForm from '../components/MonsterNpcForm';
 import NPC from '../classes/NPC';
 import { ScrollView } from 'react-native-gesture-handler';
+import unit_forms from '../functions/unit_forms';
 
 
 export default class AddUnitModal extends React.Component {
@@ -28,7 +29,7 @@ export default class AddUnitModal extends React.Component {
         }
 
         AEMcloseModal = () => {
-          this.setState({AEMmodalVisible:false});
+          this.setState({AEMmodalVisible:false, msg: null});
         }
 
         extendFormMonA = () => {
@@ -46,62 +47,20 @@ export default class AddUnitModal extends React.Component {
             formE.push(new NPC());
             this.setState({events: formE});
         }
-        updNcpA = (id, npcs) => {
-            let form = this.state.npcs;
-            form[id] = npcs;
-            this.setState({npcs: form});
+        updA = (id, unit, state) => {
+            this.setState({
+                [state]: unit_forms.updateFormItem(id, unit, this.state[state])
+            })
         }
-        delNpcA = (id) => {
-            let form = this.state.npcs;
-            form.splice(id,1);
-            this.setState({npcs: form});
-        }
-        updAdvA = (id, adv) => {
-            let form = this.state.adventurers;
-            form[id] = adv;
-            this.setState({adventurers: form});
-        }
-        delAdvA = (id) => {
-            let form = this.state.adventurers;
-            form.splice(id, 1);
-            this.setState({adventurers: form});
-        }
-
-        validateUnits = (npcs, adventurers) => {
-            let i, msg = "", name = false, initiative = false;
-            //alert(npcs[0].name);
-            for (i = 0; i < npcs.length; i++)
-            {
-                npcs[i].img_key = strings.keys.monster_img;
-                if (!npcs[i].name)
-                    name = true;
-                if (!npcs[i].initiative)
-                    initiative = true;
-                
-            }
-            for (i = 0; i < adventurers.length; i++)
-            {
-                if (!adventurers[i].img_key)
-                    adventurers[i].img_key = strings.keys.adv_img;
-                if (!adventurers[i].name)
-                    name = true;
-                if (!adventurers[i].initiative)
-                    initiative = true;
-            }
-
-            //alert(name + " " + initiative);
-            if (name)
-                msg+=strings.validation_msg.name + "\n";
-            if (initiative)
-                msg+=strings.validation_msg.initiative + "\n";
-
-            //alert(msg);
-            return msg;   
+        deleteItemA = (id, state) => {
+            this.setState({
+                [state]: unit_forms.deleteFormItem(id, this.state[state])
+            })
         }
 
         add_unit_to_list = (npcs, adv) => {
-            let msg = validateUnits(npcs, adv)
-            //alert(msg);
+            let msg = unit_forms.validateForm(npcs, adv)
+
             if (!msg) //no msg
             {
                 let allItems = npcs.concat(adv);
@@ -113,11 +72,6 @@ export default class AddUnitModal extends React.Component {
             {
                 this.setState({msg: msg});
             }
-        }
-
-        add_units = (npcs, adv) => {
-            let allItems = npcs.concat(adv);
-            this.props.add_units(allItems);
         }
     }
 
@@ -145,8 +99,8 @@ export default class AddUnitModal extends React.Component {
                                     key={index}
                                     id={index}
                                     monster={listitem}
-                                    updateForm={updNcpA}
-                                    deleteItem={delNpcA}
+                                    updt={updA}
+                                    del={deleteItemA}
                                 />
                                 )
                             })}
@@ -159,8 +113,8 @@ export default class AddUnitModal extends React.Component {
                                         key={index}
                                         id={index}
                                         npcs={listitem}
-                                        updateForm={updAdvA}
-                                        deleteItem={delAdvA}
+                                        updt={updA}
+                                        del={deleteItemA}
                                     />
                                 )
                             })}
@@ -204,6 +158,16 @@ const styles = StyleSheet.create({
     container: {
       //flex: 1,
       //backgroundColor: 'red',
+    },
+    danger: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: 'red',
+    },
+    validation_text: {
+        marginTop: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     title : {
         fontWeight : 'bold',

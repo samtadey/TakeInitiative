@@ -2,11 +2,9 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Platform, AsyncStorage} from 'react-native';
 import { Item, Label, Input, Icon } from 'native-base';
 import strings from '../constants/Strings';
-import CheckBox from 'react-native-check-box'; 
 import ModalSelector from 'react-native-modal-selector';
-import PropTypes from 'prop-types';
 import NPC from '../classes/NPC';
-import monsterApi from '../api/dnd5api'
+import unit_forms from '../functions/unit_forms';
 
 export default class PcNpcForm extends React.Component {
     constructor(props){
@@ -31,9 +29,6 @@ export default class PcNpcForm extends React.Component {
         //didn't work in the other format up above
         this.deleteFormItem = this.deleteFormItem.bind(this);
         this.updtAll = this.updtAll.bind(this);
-        this.updtName = this.updtName.bind(this);
-        this.updtType = this.updtType.bind(this);
-        this.updtInitiative = this.updtInitiative.bind(this);
     }
 
     componentDidMount() {
@@ -49,35 +44,19 @@ export default class PcNpcForm extends React.Component {
         }
     }
 
+    //can't have props.del in render ==> updating error
     deleteFormItem() {
-        this.props.deleteItem(this.props.id);
+       this.props.del(this.props.id, "adventurers");
     }
 
-    updtAll(name, type, race, img) {
-        let npc = this.state.npc;
-        npc.name = name;
+    
+
+    updtAll(npc, name, type, race, img) {
         npc.type = type;
         npc.race = race;
         npc.img_key = img;
-        this.props.updateForm(this.props.id, npc);
-    }
 
-    async updtName(text) {
-        let npc = this.state.npc;
-        npc.name = text;
-        this.props.updateForm(this.props.id, npc);
-    }
-
-    updtType(text) {
-        let npc = this.state.npc;
-        npc.type = text;
-        this.props.updateForm(this.props.id, npc);
-    }
-    
-    updtInitiative(text) {
-        let npc = this.state.npc;
-        npc.initiative = text;
-        this.props.updateForm(this.props.id, npc);
+        unit_forms.updateSelf(npc, this.props.id, "name", name, "adventurers", this.props.updt)
     }
 
     render() {
@@ -89,7 +68,7 @@ export default class PcNpcForm extends React.Component {
                         data={this.state.adventurers}
                         style={styles.modalselector}
                         initValue={this.state.npc.name ? this.state.npc.name : strings.create_encounter_form.adventurerFormName}
-                        onChange={(option)=>{ this.updtAll(option.label, option.type, option.race, option.img_key) }} />
+                        onChange={(option)=>{ this.updtAll(this.state.npc, option.label, option.type, option.race, option.img_key) }} />
 
                     <TouchableOpacity onPress={this.deleteFormItem} style={styles.closeIcon}>
                         <Icon name={Platform.OS === 'ios' ? 'ios-close-circle-outline' : 'md-close-circle-outline'} style={{marginRight: 10}}/>
@@ -103,7 +82,7 @@ export default class PcNpcForm extends React.Component {
                     name={strings.common_titles.name}
                     type="text"
                     value={this.state.npc.name}
-                    onChangeText={(text) => this.updtName(text)}
+                    onChangeText={(text) => unit_forms.updateSelf(this.state.npc, this.props.id, "name", text, "adventurers", this.props.updt)}
                     />
                 </Item>
 
@@ -113,7 +92,7 @@ export default class PcNpcForm extends React.Component {
                     name={strings.common_titles.type}
                     type="text"
                     value={this.state.npc.type}
-                    onChangeText={(text) => this.updtType(text)}
+                    onChangeText={(text) => unit_forms.updateSelf(this.state.npc, this.props.id, "type", text, "adventurers", this.props.updt)}
                     />
                 </Item>
         
@@ -124,7 +103,7 @@ export default class PcNpcForm extends React.Component {
                     type="number"
                     keyboardType="numeric"
                     value={this.state.npc.initiative}
-                    onChangeText={(text) => this.updtInitiative(text)}
+                    onChangeText={(text) => unit_forms.updateSelf(this.state.npc, this.props.id, "initiative", text, "adventurers", this.props.updt)}
                     />
                 </Item>
             </View>

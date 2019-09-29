@@ -3,7 +3,6 @@ import {
     View, 
     Text, 
     StyleSheet,
-    AsyncStorage, 
 } from 'react-native';
 import { Button } from 'native-base';
 import strings from '../constants/Strings';
@@ -12,6 +11,7 @@ import PcNpcForm from '../components/PcNpcForm';
 import MonsterNpcForm from '../components/MonsterNpcForm';
 import { ScrollView } from 'react-native-gesture-handler';
 import NPC from '../classes/NPC';
+import unit_forms from '../functions/unit_forms'
 
 
 export default class CreateEncounterModal extends React.Component {
@@ -31,8 +31,9 @@ export default class CreateEncounterModal extends React.Component {
           });
         }
         CEMcloseModal = () => {
-          this.setState({CEMmodalVisible:false});
+          this.setState({CEMmodalVisible: false, msg: null});
         }
+
         extendFormMon = () => {
             let formM = this.state.npcs;
             formM.push(new NPC());
@@ -43,61 +44,20 @@ export default class CreateEncounterModal extends React.Component {
             formA.push(new NPC());
             this.setState({adventurers: formA});
         }
-        updNpc = (id, npc) => {
-            let form = this.state.npcs;
-            form[id] = npc;
-            this.setState({npcs: form});
-        }
-        delNpc = (id) => {
-            let form = this.state.npcs;
-            form.splice(id,1);
-            this.setState({npcs: form});
-        }
-        updAdv = (id, adv) => {
-            let form = this.state.adventurers;
-            form[id] = adv;
-            this.setState({adventurers: form});
-        }
-        delAdv = (id) => {
-            let form = this.state.adventurers;
-            form.splice(id, 1);
-            this.setState({adventurers: form});
-        }
-        //validate and set default images
-        validateEncounter = (npcs, adventurers) => {
-            let i, msg = "", name = false, initiative = false;
-            //alert(npcs[0].name);
-            for (i = 0; i < npcs.length; i++)
-            {
-                npcs[i].img_key = strings.keys.monster_img;
-                if (!npcs[i].name)
-                    name = true;
-                if (!npcs[i].initiative)
-                    initiative = true;
-                
-            }
-            for (i = 0; i < adventurers.length; i++)
-            {
-                if (!adventurers[i].img_key)
-                    adventurers[i].img_key = strings.keys.adv_img;
-                if (!adventurers[i].name)
-                    name = true;
-                if (!adventurers[i].initiative)
-                    initiative = true;
-            }
 
-            //alert(name + " " + initiative);
-            if (name)
-                msg+=strings.validation_msg.name + "\n";
-            if (initiative)
-                msg+=strings.validation_msg.initiative + "\n";
-
-            //alert(msg);
-            return msg;   
+        upd = (id, unit, state) => {
+            this.setState({
+                [state]: unit_forms.updateFormItem(id, unit, this.state[state])
+            })
         }
-        generateEncounter = (npcs, adv) => {
-            //this.setState({msg: null});
-            let msg = validateEncounter(npcs, adv)
+        deleteItem = (id, state) => {
+            this.setState({
+                [state]: unit_forms.deleteFormItem(id, this.state[state])
+            })
+        }
+
+        generateEncounter = (npcs, adv) => { 
+            let msg = unit_forms.validateForm(npcs, adv)
             //alert(msg);
             if (!msg) //no msg
             {
@@ -114,13 +74,6 @@ export default class CreateEncounterModal extends React.Component {
             }
         }
 
-        // generateEncounter = (npcs, adv) => {
-        //     let allItems = npcs.concat(adv);
-        //     allItems.sort(compare);
-
-        //     this.props.generate_list(allItems);
-        //         //this.setState({npcs: [new NPC()], adventurers: [new NPC()]});
-        // }
         compare = (a, b) => {
             let aInt = parseInt(a.initiative,10);
             let bInt = parseInt(b.initiative,10);
@@ -147,14 +100,14 @@ export default class CreateEncounterModal extends React.Component {
 
                         <Text style={styles.formtitle}>{strings.create_encounter_form.monsters}</Text>
 
-                        {this.state.npcs.map(function(listitem, index){
+                        {this.state.npcs.map(function(listitem, index) {
                             return(
                                 <MonsterNpcForm
                                     key={index}
                                     id={index}
                                     monster={listitem}
-                                    updateForm={updNpc}
-                                    deleteItem={delNpc}
+                                    updt={upd}
+                                    del={deleteItem}
                                 />
                             )
                         })}
@@ -167,8 +120,8 @@ export default class CreateEncounterModal extends React.Component {
                                     key={index}
                                     id={index}
                                     npc={listitem}
-                                    updateForm={updAdv}
-                                    deleteItem={delAdv}
+                                    updt={upd}
+                                    del={deleteItem}
                                 />
                             )
                         })}

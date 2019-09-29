@@ -18,6 +18,7 @@ export default class RemoveUnitModal extends React.Component {
       RUMmodalvisible: false,
       avail_remove_list: [],
       choice_index: -1,
+      msg: '',
     };
 
     RUMopenModal = () => {
@@ -32,6 +33,7 @@ export default class RemoveUnitModal extends React.Component {
         this.setState({
           RUMmodalvisible:false,
           choice_index: -1,
+          msg: '',
         });
     }
 
@@ -48,8 +50,15 @@ export default class RemoveUnitModal extends React.Component {
 
     handleRemoveUnit = (index) => {
       if (index >= 0)
+      {
         this.props.remove_unit(index);
         RUMcloseModal();
+      }
+      else
+      {
+        this.setState({msg: strings.validation_msg.remove_unit})
+      }
+
     }
   }
 
@@ -79,8 +88,12 @@ export default class RemoveUnitModal extends React.Component {
             data={this.state.avail_remove_list}
             style={styles.spacer}
             initValue="Choose to Remove"
-            onChange={(option)=>{ this.setState({choice_index: option.key}) }} 
+            onChange={(option)=>{ this.setState({choice_index: option.key, msg: ''}) }} 
             />
+
+            <View style={styles.validation_text}>
+              <Text style={styles.danger}>{this.state.msg}</Text>
+            </View>
 
             <View style={styles.flexrow}>
                 <Button danger block style={styles.btn} onPress={() => RUMcloseModal()}>
@@ -107,6 +120,17 @@ const styles = StyleSheet.create({
   container: {
     //flex: 1,
     //backgroundColor: 'green',
+  },
+  danger: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'red',
+  },
+  validation_text: {
+      marginTop: 5,
+      marginBottom: 10,
+      justifyContent: 'center',
+      alignItems: 'center'
   },
   modal_container: {
     backgroundColor: '#FFFFFF',
