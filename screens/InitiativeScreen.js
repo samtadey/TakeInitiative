@@ -10,7 +10,6 @@ import {
 import { Icon, Button } from 'native-base';
 import Drawer from 'react-native-drawer'
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import asyncstorage from '../storage/asyncstorage';
 import strings from '../constants//Strings';
 import InitiativeActionsDrawer from '../components/InitiativeActionsDrawer';
 import InitiativeItem from '../components/InitiativeItem';
@@ -155,7 +154,60 @@ export default class InitiativeScreen extends React.Component {
 
       this.setState({initiative_list: list});
     }
+
+    add_units_to_list = (npc) => {
+      let list = this.state.initiative_list;
+
+      for (let n = 0; n < npc.length; n++)
+      {
+        let first, second;
+        let toAdd = parseInt(npc[n].initiative, 10);
+
+        if (list.length === 0)
+        {
+          list.push(npc[n]);
+        }
+        else if (list.length === 1)
+        {
+          first = parseInt(list[0].initiative);
+          if (toAdd < first)
+            list.push(npc[n]);
+          else
+            list.unshift(npc[n]);
+        }
+        else
+        {
+          let added = 0;
+          for (let i = 0; i < list.length - 1; i++)
+          {
+            first = parseInt(list[i].initiative, 10);
+            second = parseInt(list[i + 1].initiative, 10);
+          
+            if (first < second && toAdd >= second || first < second && toAdd <= first) //toAdd is greatest or least
+            {
+              list.splice(i+1, 0, npc[n]);
+              added = 1;
+              break;
+            } 
+            else if (toAdd <= first && toAdd >= second) //standard case
+            {
+              list.splice(i+1, 0, npc[n]);
+              added = 1;
+              break;
+            } 
+          }
+          //end of list
+          if (added === 0)
+            list.push(npc[n]);
+        }
+      }
+      this.setState({initiative_list: list});
+    }
+
+
   }
+
+  
 
   async componentDidMount() {
     this.props.navigation.setParams({ 
@@ -180,7 +232,7 @@ export default class InitiativeScreen extends React.Component {
     return (
       <Drawer
         type="overlay"
-        content={<InitiativeActionsDrawer list={this.state.initiative_list} generate_list={generate_list} advance_list={advance_list} add_unit={add_unit} remove_unit={remove_unit} clear_list={clear_list}/>}
+        content={<InitiativeActionsDrawer list={this.state.initiative_list} generate_list={generate_list} advance_list={advance_list} add_units={add_units_to_list} remove_unit={remove_unit} clear_list={clear_list}/>}
         tapToClose={true}
         open={this.state.drawer_open}
         openDrawerOffset={0.2} // 20% gap on the right side of drawer

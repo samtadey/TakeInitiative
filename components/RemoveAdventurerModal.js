@@ -19,6 +19,7 @@ export default class RemoveAdventurerModal extends React.Component {
       adv_list: [],
       avail_remove_list: [],
       to_remove: null,
+      msg: '',
     };
 
     RAMopenModal = () => {
@@ -29,7 +30,7 @@ export default class RemoveAdventurerModal extends React.Component {
       }
 
     RAMcloseModal = () => {
-        this.setState({RAMmodalvisible:false});
+        this.setState({RAMmodalvisible:false, msg: '', to_remove: null});
     }
 
     prepRemoveList = (list) => {
@@ -41,8 +42,15 @@ export default class RemoveAdventurerModal extends React.Component {
     }
 
     completeRemoveAdventurer = (name, list) => {
+      if (name)
+      {
         this.props.removeAdventurer(name, list);
         RAMcloseModal();
+      }
+      else 
+      {
+        this.setState({msg: strings.validation_msg.remove_adv});
+      }
     }
 }
 
@@ -70,8 +78,12 @@ export default class RemoveAdventurerModal extends React.Component {
             data={this.state.avail_remove_list}
             style={styles.spacer}
             initValue="Choose to Remove"
-            onChange={(option)=>{ this.setState({to_remove: option.label}) }} 
+            onChange={(option)=>{ this.setState({to_remove: option.label, msg: ''}) }} 
             />
+
+            <View style={styles.validation_text}>
+              <Text style={styles.danger}>{this.state.msg}</Text>
+            </View>
 
             <View style={styles.flexrow}>
                 <Button danger block style={styles.btn} onPress={() => RAMcloseModal()}>
@@ -98,6 +110,17 @@ const styles = StyleSheet.create({
   container: {
     //flex: 1,
     //backgroundColor: 'green',
+  },
+  danger: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'red',
+  },
+  validation_text: {
+      marginTop: 5,
+      marginBottom: 10,
+      justifyContent: 'center',
+      alignItems: 'center'
   },
   text: {
       color: 'white',
