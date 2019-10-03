@@ -5,7 +5,7 @@ import AppNavigator from './navigation/AppNavigator';
 //import themes from './constants/Themes'
 import {ThemeContext, themes} from './constants/Themes';
 import strings from './constants/Strings';
-//import {ThemeProvider, ThemeConsumer, ThemeContext } from './components/ThemeProvider';
+
 
 export default class App extends React.Component {
   constructor(props) {
